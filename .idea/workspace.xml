@@ -23,7 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6af189-0875-4a16-b518-d48bebf5e807" name="Default Changelist" comment="first commit, basic setup">
-      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +111,7 @@
       <workItem from="1604829479138" duration="122000" />
       <workItem from="1604829627395" duration="48000" />
       <workItem from="1604829688858" duration="152000" />
-      <workItem from="1604829851204" duration="32572000" />
+      <workItem from="1604829851204" duration="32684000" />
     </task>
     <task id="LOCAL-00001" summary="first commit, basic setup">
       <created>1604764057610</created>
@@ -148,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604870138866</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="v0.21 - Minor changes, added §source">
+      <created>1604870185628</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1604870185628</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,22 +197,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="836" y="422" key="Github.ShareDialog/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604764738554" />
-    <state width="1876" height="275" key="GridCell.Tab.0.bottom" timestamp="1604870124521">
+    <state width="1876" height="275" key="GridCell.Tab.0.bottom" timestamp="1604870182208">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870124521" />
-    <state width="1876" height="275" key="GridCell.Tab.0.center" timestamp="1604870124521">
+    <state width="1876" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870182208" />
+    <state width="1876" height="275" key="GridCell.Tab.0.center" timestamp="1604870182208">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="275" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870124521" />
-    <state width="1876" height="275" key="GridCell.Tab.0.left" timestamp="1604870124521">
+    <state width="1876" height="275" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870182208" />
+    <state width="1876" height="275" key="GridCell.Tab.0.left" timestamp="1604870182208">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="275" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870124521" />
-    <state width="1876" height="275" key="GridCell.Tab.0.right" timestamp="1604870124521">
+    <state width="1876" height="275" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870182208" />
+    <state width="1876" height="275" key="GridCell.Tab.0.right" timestamp="1604870182208">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="275" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870124521" />
+    <state width="1876" height="275" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870182208" />
     <state width="1876" height="340" key="GridCell.Tab.1.bottom" timestamp="1604840274268">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -226,10 +233,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="485" y="153" key="SettingsEditor/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604856477576" />
-    <state x="504" y="267" key="Vcs.Push.Dialog.v2" timestamp="1604868685057">
+    <state x="504" y="267" key="Vcs.Push.Dialog.v2" timestamp="1604870197829">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="504" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604868685057" />
+    <state x="504" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870197829" />
     <state x="777" y="430" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604764660000">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -248,6 +255,6 @@
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604869762685" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1604870124518" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1604870182204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
