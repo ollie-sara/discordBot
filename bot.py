@@ -126,8 +126,7 @@ async def source(ctx):
     to_embed = discord.Embed(
         title='ANTICOMPSCI Source',
         color=discord.Colour.from_rgb(255, 0, 0),
-        description='The source of this bot can be found under following link: \n'
-                    'https://github.com/ollie-sara/discordBot'
+        description='Find the source to ANTICOMPSCI [here](https://github.com/ollie-sara/discordBot)'
     )
     trans_logo = discord.File(os.path.abspath('Logo_transparent.png'), filename='image.png')
     to_embed.set_thumbnail(
