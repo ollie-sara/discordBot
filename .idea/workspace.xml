@@ -23,7 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6af189-0875-4a16-b518-d48bebf5e807" name="Default Changelist" comment="first commit, basic setup">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +111,7 @@
       <workItem from="1604829479138" duration="122000" />
       <workItem from="1604829627395" duration="48000" />
       <workItem from="1604829688858" duration="152000" />
-      <workItem from="1604829851204" duration="32684000" />
+      <workItem from="1604829851204" duration="32803000" />
     </task>
     <task id="LOCAL-00001" summary="first commit, basic setup">
       <created>1604764057610</created>
@@ -155,7 +155,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604870185628</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="v0.21 - Minor changes, added §source">
+      <created>1604870297415</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1604870297415</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -233,10 +240,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="485" y="153" key="SettingsEditor/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604856477576" />
-    <state x="504" y="267" key="Vcs.Push.Dialog.v2" timestamp="1604870197829">
+    <state x="504" y="267" key="Vcs.Push.Dialog.v2" timestamp="1604870300661">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="504" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870197829" />
+    <state x="504" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870300661" />
     <state x="777" y="430" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604764660000">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -35,7 +35,7 @@ bot.remove_command('help')
 r_client = praw.Reddit(
     client_secret=R_SECRET,
     client_id=R_ID,
-    user_agent='discordbot:R_ID:v0.2 (by u/Remaked)',
+    user_agent=f'discordbot:{R_ID}:v0.2 (by u/Remaked)',
     username=R_USERNAME,
     password=R_PASSWORD
 )
