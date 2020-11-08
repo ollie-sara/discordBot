@@ -121,6 +121,24 @@ async def r_okbr(ctx):
         await ctx.send('Something went wrong with your request. Sorry...')
 
 
+@bot.command(name='source')
+async def source(ctx):
+    to_embed = discord.Embed(
+        title='ANTICOMPSCI Source',
+        color=discord.Colour.from_rgb(255, 0, 0),
+        description='The source of this bot can be found under following link: \n'
+                    'https://github.com/ollie-sara/discordBot'
+    )
+    trans_logo = discord.File(os.path.abspath('Logo_transparent.png'), filename='image.png')
+    to_embed.set_thumbnail(
+        url='attachment://image.png'
+    )
+    to_embed.set_footer(
+        text='Created by ollie[16] in HS2020'
+    )
+    await ctx.send(embed=to_embed, file=trans_logo)
+
+
 @bot.command(name='reddit')
 async def reddit(ctx, arg):
     """
@@ -140,7 +158,7 @@ async def reddit(ctx, arg):
             await ctx.send('Not going to browse _r/' + arg + '_ on my christian server. :flushed:')
             return
 
-        posts = list(sub.top(time_filter='month'))
+        posts = list(sub.hot())
         post = random.choice(posts)
         n = 0
         while post.over_18:
@@ -279,7 +297,10 @@ async def myhelp(ctx, *args):
             to_embed.set_footer(text='Use \"random\" as your <sub> for a random subreddit')
         elif com == 'okbr':
             to_embed.description = 'Correct form: `§okbr`\n' \
-                                   'Returns a random post from r/okbuddyretard\n'
+                                   'Returns a random post from r/okbuddyretard'
+        elif com == 'source':
+            to_embed.description = 'Correct form: `§source`\n' \
+                                   'Returns a link to this bots source code.'
 
     await ctx.send(file=trans_logo, embed=to_embed)
 
