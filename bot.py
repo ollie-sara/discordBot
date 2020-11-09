@@ -26,8 +26,18 @@ async def background_loop():
 bot.owner_ids = [
     '108305736131440640'
 ]
-bot.restricted_commands = [
 
+with open(os.path.abspath('./data/bannedsubs.txt')) as f:
+    bot.banned_subs = f.read().splitlines()
+
+
+def reload_banned_subs():
+    pass
+
+
+bot.restricted_commands = [
+    'bansub',
+    'unbansub'
 ]
 
 @bot.event

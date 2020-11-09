@@ -23,7 +23,7 @@
             `§reddit &lt;subreddit&gt;`
         </usage>
         <description>
-            Returns a random post of the specified subreddit under `&lt;subreddit&gt;` (without 'r/'). Specifying `random` returns a random post from a random subreddit. Use `§okbr` to return a random post from r/okbuddyretard.\n\nAny post returned is marked SFW on reddit.
+            Returns a random post of the specified subreddit under `&lt;subreddit&gt;` (without 'r/'). Specifying `random` returns a random post from a random subreddit. Use `§okbr` to return a random post from `r/okbuddyretard`.&#xD;&#xD;Any post returned is marked SFW on reddit.
         </description>
     </command>
     <command>
@@ -62,6 +62,15 @@
         </usage>
         <description>
             For debug purposes. Returns exactly the message you pass through.
+        </description>
+    </command>
+    <command>
+        <name>bansub</name>
+        <usage>
+            `§bansub &lt;subreddit&gt;`
+        </usage>
+        <description>
+            Admin-only. Deletes bad subreddits from being used by assholes.
         </description>
     </command>
 </root>

@@ -24,19 +24,48 @@ class Reddit(commands.Cog):
         )
         self.ccolor = bColors.bColors()
 
+    @commands.command(name='unbansub')
+    async def unbansub(self, ctx, arg):
+        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
+            await ctx.send('This command is currently only available to developers.')
+            return
+
+        with open(os.path.abspath('./data/bannedsubs.txt'), 'w') as f:
+            for sub in self.bot.banned_subs:
+                if not sub == arg:
+                    f.write(sub+'\n')
+
+        await ctx.send(f'_r/{arg}_ was succesfully reinstated. :relaxed:')
+        with open(os.path.abspath('./data/bannedsubs.txt')) as f:
+            self.bot.banned_subs = f.read().splitlines()
+        try:
+            for m in self.bot.modules:
+                self.bot.load_extension('cogs.' + m)
+        except Exception as e:
+            print(f'{self.ccolor.FAIL}COG ERROR: {self.ccolor.ENDC}' + str(e))
+
+    @commands.command(name='bansub')
+    async def bansub(self, ctx, arg):
+        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
+            await ctx.send('This command is currently only available to developers.')
+            return
+
+        with open(os.path.abspath('./data/bannedsubs.txt'), 'a') as f:
+            f.write('\n'+arg)
+        await ctx.send(f'_r/{arg}_ was succesfully purged. :relaxed:')
+        with open(os.path.abspath('./data/bannedsubs.txt')) as f:
+            self.bot.banned_subs = f.read().splitlines()
+        try:
+            for m in self.bot.modules:
+                self.bot.load_extension('cogs.' + m)
+        except Exception as e:
+            print(f'{self.ccolor.FAIL}COG ERROR: {self.ccolor.ENDC}' + str(e))
+
     @commands.command(name='reddit', aliases=['okbr', 'r'])
     async def reddit(self, ctx, *args):
         if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
             await ctx.send('This command is currently only available to developers.')
             return
-
-        # BANNED SUBREDDITS
-        banned_subreddits =[
-            'makemesuffer',
-            'makemesuffermore',
-            'fiftyfifty',
-            'kek'
-        ]
 
         if not args and '§reddit' == ctx.message.content:
             await ctx.send('Incorrect use of the command. Refer to `§help reddit` for further instructions.')
@@ -51,7 +80,7 @@ class Reddit(commands.Cog):
                 if str(args[0]) == 'random':
                     sub = self.r_client.random_subreddit()
                 else:
-                    if args[0] in banned_subreddits:
+                    if args[0] in self.bot.banned_subs:
                         await ctx.send(f'_r/{args[0]}_ was banned.')
                         return
                     sub = self.r_client.subreddit(args[0])
@@ -118,4 +147,3 @@ class Reddit(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Reddit(bot))
-

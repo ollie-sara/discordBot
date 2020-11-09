@@ -3,14 +3,15 @@ from discord.ext import commands
 import os
 from cogs import bColors
 import xml.etree.ElementTree as ET
+from pathlib import PosixPath
 
 
 class Help(commands.Cog):
     def __init__(self, bot):
         self.ccolor = bColors.bColors()
         self.bot = bot
-        self.commandInfo = ET.parse('./data/help.xml').getroot()
-        self.commandList = ET.parse('./data/categories.xml').getroot()
+        self.commandInfo = ET.parse(os.path.abspath('./data/help.xml')).getroot()
+        self.commandList = ET.parse(os.path.abspath('./data/categories.xml')).getroot()
 
     @commands.command(name='help', aliases=['h', 'halp'])
     async def myhelp(self, ctx, *args):
@@ -42,11 +43,12 @@ class Help(commands.Cog):
                     for a in c.find('aliases').findall('a'):
                         aliases += '`§'+a.text+'` '
             to_embed.title = '§' + requested
-            to_embed.add_field(
-                name='Aliases',
-                value=aliases,
-                inline=False
-            )
+            if aliases != '':
+                to_embed.add_field(
+                    name='Aliases',
+                    value=aliases,
+                    inline=False
+                )
             to_embed.add_field(
                 name='Usage',
                 value=usage,
