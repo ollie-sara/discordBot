@@ -24,6 +24,27 @@ class Reddit(commands.Cog):
         )
         self.ccolor = bColors.bColors()
 
+    @commands.command(name='printbannedsubs'):
+    async def printbannedsubs(self, ctx):
+        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
+            await ctx.send('This command is currently only available to developers.')
+            return
+        auth = ctx.message.author.display_name
+        auth_img = ctx.message.author.avatar_url
+        to_embed = discord.Embed(
+            title='Banned subreddits',
+            color=discord.Colour.from_rgb(55, 133, 245),
+            description='```'
+        )
+        for sub in self.bot.banned_subs:
+            to_embed.description += sub+'\n'
+        to_embed.description += '```'
+        to_embed.set_footer(
+            text='as requested by ' + auth,
+            icon_url=auth_img
+        )
+        await ctx.send(embed=to_embed)
+
     @commands.command(name='unbansub')
     async def unbansub(self, ctx, arg):
         if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:

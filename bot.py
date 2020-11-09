@@ -37,7 +37,8 @@ def reload_banned_subs():
 
 bot.restricted_commands = [
     'bansub',
-    'unbansub'
+    'unbansub',
+    'printbannedsubs'
 ]
 
 @bot.event
