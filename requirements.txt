@@ -1,0 +1,5 @@
+discord.py==1.5.1
+varname==0.5.3
+urllib3==1.25.11
+python-dotenv==0.15.0
+praw~=7.1.0

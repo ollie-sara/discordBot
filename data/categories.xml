@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<root>
+    <category>
+        <cname>Media</cname>
+        <command>
+            <name>§reddit</name>
+            <description>Returns a random post from a specified subreddit.</description>
+        </command>
+    </category>
+    <category>
+        <cname>Utility</cname>
+        <command>
+            <name>§source</name>
+            <description>Returns basic information about the bot.</description>
+        </command>
+        <command>
+            <name>§ping</name>
+            <description>Returns the current latency of the bot.</description>
+        </command>
+        <command>
+            <name>§help</name>
+            <description>Returns this list of commands.</description>
+        </command>
+    </category>
+</root>

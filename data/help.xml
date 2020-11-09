@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <command>
+        <name>help</name>
+        <aliases>
+            <a>h</a>
+            <a>halp</a>
+        </aliases>
+        <usage>
+            `§help (&lt;command&gt;)`
+        </usage>
+        <description>
+            Returns list of commands or specific instructions on the command specified by `&lt;command&gt;`
+        </description>
+    </command>
+    <command>
+        <name>reddit</name>
+        <aliases>
+            <a>r</a>
+            <a>okbr</a>
+        </aliases>
+        <usage>
+            `§reddit &lt;subreddit&gt;`
+        </usage>
+        <description>
+            Returns a random post of the specified subreddit under `&lt;subreddit&gt;` (without 'r/'). Specifying `random` returns a random post from a random subreddit. Use `§okbr` to return a random post from r/okbuddyretard.\n\nAny post returned is marked SFW on reddit.
+        </description>
+    </command>
+    <command>
+        <name>ping</name>
+        <aliases>
+            <a>p</a>
+            <a>pong</a>
+        </aliases>
+        <usage>
+            `§ping`
+        </usage>
+        <description>
+            Returns the latency of the bot.
+        </description>
+    </command>
+    <command>
+        <name>source</name>
+        <aliases>
+            <a>s</a>
+            <a>info</a>
+        </aliases>
+        <usage>
+            `§source`
+        </usage>
+        <description>
+            Returns basic information about the bot.
+        </description>
+    </command>
+    <command>
+        <name>echo</name>
+        <aliases>
+            <a>e</a>
+        </aliases>
+        <usage>
+            `§echo &lt;message&gt;`
+        </usage>
+        <description>
+            For debug purposes. Returns exactly the message you pass through.
+        </description>
+    </command>
+</root>
