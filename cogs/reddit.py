@@ -13,18 +13,14 @@ class Reddit(commands.Cog):
         load_dotenv()
         R_SECRET = os.getenv('REDDIT_SECRET')
         R_ID = os.getenv('REDDIT_ID')
-        R_USERNAME = os.getenv('REDDIT_USERNAME')
-        R_PASSWORD = os.getenv('REDDIT_PASSWORD')
         self.r_client = praw.Reddit(
             client_secret=R_SECRET,
             client_id=R_ID,
-            user_agent=f'discordbot:{R_ID}:v0.2 (by u/Remaked)',
-            username=R_USERNAME,
-            password=R_PASSWORD
+            user_agent=f'discordbot:{R_ID}:v0.2 (by u/Remaked)'
         )
         self.ccolor = bColors.bColors()
 
-    @commands.command(name='printbannedsubs'):
+    @commands.command(name='printbannedsubs')
     async def printbannedsubs(self, ctx):
         if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
             await ctx.send('This command is currently only available to developers.')
@@ -73,7 +69,7 @@ class Reddit(commands.Cog):
 
         with open(os.path.abspath('./data/bannedsubs.txt'), 'a') as f:
             f.write('\n'+arg)
-        await ctx.send(f'_r/{arg}_ was succesfully purged. :relaxed:')
+        await ctx.send(f'_r/{arg}_ was succesfully yeeted. :relaxed:')
         with open(os.path.abspath('./data/bannedsubs.txt')) as f:
             self.bot.banned_subs = f.read().splitlines()
         try:
@@ -82,17 +78,19 @@ class Reddit(commands.Cog):
         except Exception as e:
             print(f'{self.ccolor.FAIL}COG ERROR: {self.ccolor.ENDC}' + str(e))
 
-    @commands.command(name='reddit', aliases=['okbr', 'r'])
+    @commands.command(name='reddit', aliases=['okbr', 'r', 'redditimage', 'ri'])
     async def reddit(self, ctx, *args):
         if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
             await ctx.send('This command is currently only available to developers.')
             return
 
-        if not args and '§reddit' == ctx.message.content:
+        command = str(ctx.message.content).replace('§', '')
+        if not args and command in ctx.message.content:
             await ctx.send('Incorrect use of the command. Refer to `§help reddit` for further instructions.')
             return
 
-        command = str(ctx.message.content).replace('§', '')
+        auth = ctx.message.author.display_name
+        auth_img = ctx.message.author.avatar_url
 
         try:
             if command == 'okbr':
@@ -111,33 +109,60 @@ class Reddit(commands.Cog):
                 await ctx.send('Not going to browse _r/' + args[0] + '_ on my christian server. :flushed:')
                 return
 
-            posts = list(sub.hot(limit=50))
+            posts = list(sub.top(limit=30))+list(sub.top(time_filter='week', limit=30))
             post = random.choice(posts)
             n = 0
-            while post.over_18:
-                if n < 50:
+            fits_criteria = False
+            while not fits_criteria and not n >= 50:
+                fits_criteria = True
+                if 'redditimage' in command or 'ri' in command:
+                    if post.is_self:
+                        fits_criteria = False
+                    else:
+                        if vars(post).get('url_overridden_by_dest') is None or vars(post) is None:
+                            fits_criteria = False
+                            n += 1
+                            continue
+                        url = vars(post).get('url_overridden_by_dest')
+                        if post.media is not None:
+                            if 'reddit_video' not in str(post.media):
+                                fits_criteria = False
+                            elif '.mp4' not in str(post.media.get('reddit_video').get('fallback_url')):
+                                fits_criteria = False
+                        elif '.png' not in url and '.gif' not in url and '.jpg' not in url:
+                            fits_criteria = False
+                if post.media is not None:
+                    if 'reddit_video' in str(post.media):
+                        if '.mp4' not in str(post.media.get('reddit_video').get('fallback_url')):
+                            fits_criteria = False
+                if 'gallery' in post.url:
+                    fits_criteria = False
+                if post.over_18:
+                    fits_criteria = False
+                if not fits_criteria:
                     post = random.choice(posts)
-                else:
-                    break
                 n += 1
-            if post.over_18:
-                print(self.ccolor.WARNING + 'Somebody is trying to post NSFW stuff on Discord!' + self.ccolor.ENDC)
-                await ctx.send('Couldn\'t find any non-NSFW post. Maybe another subreddit?')
-                return
 
+            if not fits_criteria:
+                if 'redditimage' in command or 'ri' in command:
+                    await ctx.send('Couldn\'t find any sendable pictures. Maybe another subreddit?')
+                else:
+                    await ctx.send('Couldn\'t find any sendable posts. Maybe another subreddit?')
+                return
+            post_title = post.title
+            if len(post.title) > 256:
+                post_title = post.title[0:252]+'...'
             to_embed = discord.Embed(
-                title=post.title,
-                url=post.url,
+                title=post_title,
+                url='https://www.reddit.com/'+post.permalink,
                 color=discord.Colour.from_rgb(55, 133, 245)
             )
             to_embed.set_author(
-                name='u/'+post.author.name,
-                icon_url=post.author.icon_img if 'icon_img' in vars(post.author) else ''
+                name='u/'+post.author.name + ' | from: r/' + sub.display_name + ' | UP: ' + str(post.score) + ' | DOWN: ' + str(round(post.score*(1-post.upvote_ratio))) + ' | Comments: ' + str(post.num_comments)
             )
-
             to_embed.set_footer(
-                text='from: r/' + sub.display_name + ' | UP: ' + str(post.score) + ' | DOWN: '
-                     + str(round(post.score*(1-post.upvote_ratio))) + ' | Comments: ' + str(post.num_comments)
+                text='called by ' + auth,
+                icon_url=auth_img
             )
 
             if post.is_self:
@@ -155,8 +180,10 @@ class Reddit(commands.Cog):
                     await ctx.send(embed=to_embed)
                     await ctx.send(post.url)
             else:
+                print(vars(post))
+                out = post.url
                 await ctx.send(embed=to_embed)
-                await ctx.send(post.url)
+                await ctx.send(out)
 
         except Exception as e:
             print(self.ccolor.FAIL + 'REDDIT EXCEPTION: ' + self.ccolor.ENDC + str(e))

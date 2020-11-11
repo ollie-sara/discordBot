@@ -7,6 +7,14 @@
             <name>§reddit</name>
             <description>Returns a random post from a specified subreddit.</description>
         </command>
+        <command>
+            <name>§redditimage</name>
+            <description>Returns a random image from a specified subreddit.</description>
+        </command>
+        <command>
+            <name>§drumpf</name>
+            <description>Prints a tweet with your text from the United States presidents' Twitter account.</description>
+        </command>
     </category>
     <category>
         <cname>Utility</cname>
@@ -21,6 +29,21 @@
         <command>
             <name>§help</name>
             <description>Returns this list of commands.</description>
+        </command>
+    </category>
+    <category>
+        <cname>Admin</cname>
+        <command>
+            <name>§bansub</name>
+            <description>Bans a subreddit from being called by users.</description>
+        </command>
+        <command>
+            <name>§unbansub</name>
+            <description>Unbans a subreddit to be called by users.</description>
+        </command>
+        <command>
+            <name>§printbannedsubs</name>
+            <description>Returns the current list of banned subreddits.</description>
         </command>
     </category>
 </root>

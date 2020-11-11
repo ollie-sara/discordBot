@@ -3,6 +3,7 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 from cogs import bColors
+import asyncio
 
 
 # COLORS FOR CONSOLE ERRORS
@@ -24,7 +25,9 @@ async def background_loop():
 
 # EVENT HANDLING
 bot.owner_ids = [
-    '108305736131440640'
+    '108305736131440640',   # OLLIE
+    '153929916977643521',   # BATTLERUSH
+    '205704051856244736'    # SPRÜTZ
 ]
 
 with open(os.path.abspath('./data/bannedsubs.txt')) as f:
@@ -37,9 +40,9 @@ def reload_banned_subs():
 
 bot.restricted_commands = [
     'bansub',
-    'unbansub',
-    'printbannedsubs'
+    'unbansub'
 ]
+
 
 @bot.event
 async def on_message(message):
@@ -61,8 +64,11 @@ async def on_command_error(_, error):
 modules = [
     'reddit',
     'help',
-    'smallutils'
+    'smallutils',
+    'image'
 ]
+
+bot.current_image = 0
 
 try:
     for m in modules:

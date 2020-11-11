@@ -1,9 +1,10 @@
+import os
+import xml.etree.ElementTree as ET
+
 import discord
 from discord.ext import commands
-import os
+
 from cogs import bColors
-import xml.etree.ElementTree as ET
-from pathlib import PosixPath
 
 
 class Help(commands.Cog):
@@ -35,20 +36,29 @@ class Help(commands.Cog):
         desc = ''
         usage = ''
         aliases = ''
+        title = ''
         if requested != 'help':
             for c in self.commandInfo.findall('command'):
-                if c.find('name').text == requested:
+                is_alias = False
+                for a in c.find('aliases').findall('a'):
+                    if a.text == requested:
+                        is_alias = True
+                if c.find('name').text == requested or is_alias:
+                    title = c.find('name').text
                     usage = c.find('usage').text
                     desc = c.find('description').text
                     for a in c.find('aliases').findall('a'):
-                        aliases += '`§'+a.text+'` '
-            to_embed.title = '§' + requested
-            if aliases != '':
-                to_embed.add_field(
-                    name='Aliases',
-                    value=aliases,
-                    inline=False
-                )
+                        if a.text != 'none':
+                            aliases += '`§'+a.text+'` '
+                        else:
+                            aliases += 'none'
+
+            to_embed.title = '§' + title
+            to_embed.add_field(
+                name='Aliases',
+                value=aliases,
+                inline=False
+            )
             to_embed.add_field(
                 name='Usage',
                 value=usage,

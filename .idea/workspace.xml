@@ -23,9 +23,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6af189-0875-4a16-b518-d48bebf5e807" name="Default Changelist" comment="first commit, basic setup">
+      <change afterPath="$PROJECT_DIR$/cogs/image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Segoe UI.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/drumpf_template.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/help.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/help.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/reddit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/reddit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/smallutils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/smallutils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/bannedsubs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/bannedsubs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/categories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/categories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/help.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/help.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +79,14 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\olive\PycharmProjects\discordBot\data" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\olive\PycharmProjects\discordBot" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="bot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -121,7 +139,18 @@
       <workItem from="1604907361731" duration="4159000" />
       <workItem from="1604912575085" duration="2881000" />
       <workItem from="1604918924386" duration="12018000" />
-      <workItem from="1604935185299" duration="3459000" />
+      <workItem from="1604935185299" duration="5568000" />
+      <workItem from="1604999598814" duration="595000" />
+      <workItem from="1605003027585" duration="911000" />
+      <workItem from="1605015185010" duration="3874000" />
+      <workItem from="1605019137344" duration="702000" />
+      <workItem from="1605031185510" duration="1804000" />
+      <workItem from="1605042974541" duration="124000" />
+      <workItem from="1605045541394" duration="3653000" />
+      <workItem from="1605049437298" duration="488000" />
+      <workItem from="1605049975666" duration="1062000" />
+      <workItem from="1605051303467" duration="78000" />
+      <workItem from="1605100347587" duration="4764000" />
     </task>
     <task id="LOCAL-00001" summary="first commit, basic setup">
       <created>1604764057610</created>
@@ -193,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604940312852</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="v0.6 - Added banlist to ban/unban subreddits">
+      <created>1604940654571</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1604940654571</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -231,6 +267,10 @@
     </state>
     <state x="734" y="310" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604854786663" />
     <state x="3094" y="-565" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604915646638" />
+    <state x="3187" y="-477" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1604999713359">
+      <screen x="1920" y="-1068" width="3072" height="1688" />
+    </state>
+    <state x="3187" y="-477" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604999713359" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1604764633183">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -239,46 +279,47 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="836" y="422" key="Github.ShareDialog/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604764738554" />
-    <state width="3028" height="195" key="GridCell.Tab.0.bottom" timestamp="1604940260472">
+    <state width="1876" height="340" key="GridCell.Tab.0.bottom" timestamp="1605104294230">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
+    <state width="3028" height="191" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
+    <state width="1876" height="340" key="GridCell.Tab.0.center" timestamp="1605104294230">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
+    <state width="3028" height="191" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
+    <state width="1876" height="340" key="GridCell.Tab.0.left" timestamp="1605104294230">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
+    <state width="3028" height="191" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
+    <state width="1876" height="340" key="GridCell.Tab.0.right" timestamp="1605104294230">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
+    <state width="3028" height="191" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
+    <state width="1876" height="340" key="GridCell.Tab.1.bottom" timestamp="1605104294137">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
+    <state width="1876" height="340" key="GridCell.Tab.1.center" timestamp="1605104294137">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
+    <state width="1876" height="340" key="GridCell.Tab.1.left" timestamp="1605104294137">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
+    <state width="1876" height="340" key="GridCell.Tab.1.right" timestamp="1605104294137">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="340" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
+    <state x="2178" y="-875" width="1295" height="850" key="SettingsEditor" timestamp="1605015462513">
       <screen x="1920" y="-1068" width="3072" height="1688" />
-    </state>
-    <state width="1876" height="195" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604929804862" />
-    <state width="3028" height="195" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604940260472" />
-    <state width="3028" height="195" key="GridCell.Tab.0.center" timestamp="1604940260472">
-      <screen x="1920" y="-1068" width="3072" height="1688" />
-    </state>
-    <state width="1876" height="195" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604929804862" />
-    <state width="3028" height="195" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604940260472" />
-    <state width="3028" height="195" key="GridCell.Tab.0.left" timestamp="1604940260472">
-      <screen x="1920" y="-1068" width="3072" height="1688" />
-    </state>
-    <state width="1876" height="195" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604929804862" />
-    <state width="3028" height="195" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604940260472" />
-    <state width="3028" height="195" key="GridCell.Tab.0.right" timestamp="1604940260472">
-      <screen x="1920" y="-1068" width="3072" height="1688" />
-    </state>
-    <state width="1876" height="195" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604929804862" />
-    <state width="3028" height="195" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604940260472" />
-    <state width="1876" height="340" key="GridCell.Tab.1.bottom" timestamp="1604880269347">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604880269347" />
-    <state width="1876" height="340" key="GridCell.Tab.1.center" timestamp="1604880269347">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604880269347" />
-    <state width="1876" height="340" key="GridCell.Tab.1.left" timestamp="1604880269347">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604880269347" />
-    <state width="1876" height="340" key="GridCell.Tab.1.right" timestamp="1604880269347">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604880269347" />
-    <state x="161" y="119" width="1295" height="850" key="SettingsEditor" timestamp="1604911522806">
-      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="161" y="119" width="1295" height="850" key="SettingsEditor/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604911522806" />
+    <state x="2178" y="-875" key="SettingsEditor/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605015462513" />
     <state x="2726" y="-635" key="Vcs.Push.Dialog.v2" timestamp="1604928400305">
       <screen x="1920" y="-1068" width="3072" height="1688" />
     </state>
@@ -306,6 +347,6 @@
     <state x="2917" y="-703" width="1076" height="1101" key="search.everywhere.popup/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604925541254" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1604940260466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1605104294112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
