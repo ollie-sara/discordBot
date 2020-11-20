@@ -52,7 +52,7 @@ class Reddit(commands.Cog):
                 if not sub == arg:
                     f.write(sub+'\n')
 
-        await ctx.send(f'_r/{arg}_ was succesfully reinstated. :relaxed:')
+        await ctx.send(f'*r/{arg}* was succesfully reinstated. :relaxed:')
         with open(os.path.abspath('./data/bannedsubs.txt')) as f:
             self.bot.banned_subs = f.read().splitlines()
         try:
@@ -69,7 +69,7 @@ class Reddit(commands.Cog):
 
         with open(os.path.abspath('./data/bannedsubs.txt'), 'a') as f:
             f.write('\n'+arg)
-        await ctx.send(f'_r/{arg}_ was succesfully yeeted. :relaxed:')
+        await ctx.send(f'*r/{arg}* was succesfully yeeted. :relaxed:')
         with open(os.path.abspath('./data/bannedsubs.txt')) as f:
             self.bot.banned_subs = f.read().splitlines()
         try:
@@ -85,31 +85,41 @@ class Reddit(commands.Cog):
             return
 
         command = str(ctx.message.content).replace('§', '')
-        if not args and command in ctx.message.content:
+        if not args and command in ctx.message.content and command != 'okbr':
             await ctx.send('Incorrect use of the command. Refer to `§help reddit` for further instructions.')
             return
 
         auth = ctx.message.author.display_name
         auth_img = ctx.message.author.avatar_url
+        sub_string = args[0].lower()
+        if '%' in sub_string:
+            sub_string = sub_string.split('%')[0]
+        if '/' in sub_string:
+            sub_string = sub_string.split('/')[0]
+        temp = sub_string
+        sub_string = ''
+        for c in temp:
+            if c in 'abcdefghijklmnopqrstuvwxyz_1234567890':
+                sub_string += c
 
         try:
             if command == 'okbr':
                 sub = self.r_client.subreddit('okbuddyretard')
             else:
-                if str(args[0]) == 'random':
+                if str(sub_string) == 'random':
                     sub = self.r_client.random_subreddit()
                 else:
-                    if args[0] in self.bot.banned_subs:
-                        await ctx.send(f'_r/{args[0]}_ was banned.')
+                    if sub_string in self.bot.banned_subs:
+                        await ctx.send(f'*r/{sub_string}* was banned.')
                         return
                     sub = self.r_client.subreddit(args[0])
 
             if sub.over18:
                 print(self.ccolor.WARNING + 'Somebody is trying to post NSFW stuff on Discord!' + self.ccolor.ENDC)
-                await ctx.send('Not going to browse _r/' + args[0] + '_ on my christian server. :flushed:')
+                await ctx.send('Not going to browse _r/' + sub_string + '_ on my christian server. :flushed:')
                 return
 
-            posts = list(sub.top(limit=30))+list(sub.top(time_filter='week', limit=30))
+            posts = list(sub.top(limit=20))+list(sub.top(time_filter='year', limit=20))+list(sub.hot(limit=10))
             post = random.choice(posts)
             n = 0
             fits_criteria = False
@@ -129,7 +139,7 @@ class Reddit(commands.Cog):
                                 fits_criteria = False
                             elif '.mp4' not in str(post.media.get('reddit_video').get('fallback_url')):
                                 fits_criteria = False
-                        elif '.png' not in url and '.gif' not in url and '.jpg' not in url:
+                        elif '.png' not in url and '.gif' not in url and '.jpg' not in url and 'gfycat' not in url and 'imgur' not in url:
                             fits_criteria = False
                 if post.media is not None:
                     if 'reddit_video' in str(post.media):
@@ -154,7 +164,7 @@ class Reddit(commands.Cog):
                 post_title = post.title[0:252]+'...'
             to_embed = discord.Embed(
                 title=post_title,
-                url='https://www.reddit.com/'+post.permalink,
+                url='https://www.reddit.com'+post.permalink,
                 color=discord.Colour.from_rgb(55, 133, 245)
             )
             to_embed.set_author(
@@ -164,7 +174,7 @@ class Reddit(commands.Cog):
                 text='called by ' + auth,
                 icon_url=auth_img
             )
-
+            # print(vars(post))
             if post.is_self:
                 text = post.selftext
                 if len(str(post.selftext)) > 1950:
@@ -180,10 +190,13 @@ class Reddit(commands.Cog):
                     await ctx.send(embed=to_embed)
                     await ctx.send(post.url)
             else:
-                print(vars(post))
-                out = post.url
-                await ctx.send(embed=to_embed)
-                await ctx.send(out)
+                url = vars(post).get('url_overridden_by_dest')
+                if str(url).endswith('.png') or str(url).endswith('.jpg') or str(url).endswith('.gif') or str(url).endswith('.jpeg'):
+                    to_embed.set_image(url=url)
+                    await ctx.send(embed=to_embed)
+                else:
+                    await ctx.send(embed=to_embed)
+                    await ctx.send(post.url)
 
         except Exception as e:
             print(self.ccolor.FAIL + 'REDDIT EXCEPTION: ' + self.ccolor.ENDC + str(e))

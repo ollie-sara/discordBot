@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
+import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from cogs import bColors
-import asyncio
 
 
 # COLORS FOR CONSOLE ERRORS
@@ -14,7 +15,8 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # NECESSARY BOT STUFF
-bot = commands.Bot(command_prefix='§', description="ANTICOMPSCI")
+intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True);
+bot = commands.Bot(command_prefix='§', description="ANTICOMPSCI", intents=intents)
 bot.remove_command('help')
 
 
@@ -40,7 +42,8 @@ def reload_banned_subs():
 
 bot.restricted_commands = [
     'bansub',
-    'unbansub'
+    'unbansub',
+    'reload'
 ]
 
 
@@ -58,6 +61,37 @@ async def on_ready():
 @bot.event
 async def on_command_error(_, error):
     print(ccolor.FAIL + "COMMAND ERROR: " + ccolor.ENDC + str(error))
+    print(f'{ccolor.FAIL}COMMAND ERROR:{ccolor.ENDC} {error}')
+
+
+@bot.event
+async def on_reaction_add(reaction, user):
+    emoji = reaction.emoji.id
+    if emoji == 747783377662378004 and reaction.message.author.id != user.id:
+        bot.get_cog('Karma').change_state_user(user_id=reaction.message.author.id, change='upvote',
+                                               karma_type=bot.get_cog('Karma').check_type(reaction.message))
+        bot.get_cog('Karma').change_state_post(message=reaction.message,
+                                               value='up', increase=True)
+    elif emoji == 747783377662378004 and reaction.message.author.id != user.id:
+        bot.get_cog('Karma').change_state_user(user_id=reaction.message.author.id, change='downvote',
+                                               karma_type=bot.get_cog('Karma').check_type(reaction.message))
+        bot.get_cog('Karma').change_state_post(message=reaction.message,
+                                               value='down', increase=True)
+
+
+@bot.event
+async def on_reaction_remove(reaction, user):
+    emoji = reaction.emoji.id
+    if emoji == 747783377662378004 and reaction.message.author.id != user.id:
+        bot.get_cog('Karma').change_state_user(user_id=reaction.message.author.id, change='upvote',
+                                               karma_type=bot.get_cog('Karma').check_type(reaction.message))
+        bot.get_cog('Karma').change_state_post(message=reaction.message,
+                                               value='up', increase=False)
+    elif emoji == 747783377662378004 and reaction.message.author.id != user.id:
+        bot.get_cog('Karma').change_state_user(user_id=reaction.message.author.id, change='downvote',
+                                               karma_type=bot.get_cog('Karma').check_type(reaction.message))
+        bot.get_cog('Karma').change_state_post(message=reaction.message,
+                                               value='down', increase=False)
 
 
 # COMMANDS
@@ -65,8 +99,19 @@ modules = [
     'reddit',
     'help',
     'smallutils',
-    'image'
+    'image',
+    'karma'
 ]
+
+
+@bot.command(name='reload')
+async def reload(ctx):
+    if str(ctx.command) in bot.restricted_commands and str(ctx.message.author.id) not in bot.owner_ids:
+        await ctx.send('This command is currently only available to developers.')
+        return
+    for mo in modules:
+        bot.reload_extension('cogs.'+mo)
+    await ctx.send('Reloaded all cogs! Thank you, admin! :relaxed:')
 
 bot.current_image = 0
 
@@ -74,6 +119,9 @@ try:
     for m in modules:
         bot.load_extension('cogs.'+m)
 except Exception as e:
-    print(f'{ccolor.FAIL}COG ERROR: {ccolor.ENDC}'+str(e))
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    print(f'{ccolor.FAIL}COG ERROR: {ccolor.ENDC}{e} | Line: {lineno}')
 
 bot.run(TOKEN)

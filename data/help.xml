@@ -124,4 +124,30 @@
             Returns a random image or gif from a given subreddit passed in `&lt;subreddit&gt;`
         </description>
     </command>
+    <command>
+        <name>karma</name>
+        <aliases>
+            <a>k</a>
+        </aliases>
+        <usage>
+            `§karma (&lt;user&gt;)`
+        </usage>
+        <description>
+            Returns the amount of post and link karma of yourself, or, if passed in `&lt;user&gt;`, the karma of the specified user.
+            Every time you get a :this: or :that: reaction on one of your messages on this server, you gain karma. If you posted purely text, you receive post karma and otherwise link karma.
+            Use `§karma lb` to print karma leaderboards of the server.
+        </description>
+    </command>
+    <command>
+        <name>postlb</name>
+        <aliases>
+            <a>plb</a>
+        </aliases>
+        <usage>
+            `§postlb`
+        </usage>
+        <description>
+            Returns the top voted tweets of all time and this week.
+        </description>
+    </command>
 </root>

@@ -23,13 +23,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6af189-0875-4a16-b518-d48bebf5e807" name="Default Changelist" comment="first commit, basic setup">
-      <change afterPath="$PROJECT_DIR$/cogs/image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cogs/karma.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/Segoe UI.ttf" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/drumpf_template.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/posts/Post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/users/User.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/help.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/help.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/reddit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/reddit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/smallutils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/smallutils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/bannedsubs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/bannedsubs.txt" afterDir="false" />
@@ -150,7 +150,16 @@
       <workItem from="1605049437298" duration="488000" />
       <workItem from="1605049975666" duration="1062000" />
       <workItem from="1605051303467" duration="78000" />
-      <workItem from="1605100347587" duration="4764000" />
+      <workItem from="1605100347587" duration="5341000" />
+      <workItem from="1605131735170" duration="1192000" />
+      <workItem from="1605132988846" duration="22000" />
+      <workItem from="1605133108934" duration="59000" />
+      <workItem from="1605279996240" duration="15000" />
+      <workItem from="1605280020331" duration="31000" />
+      <workItem from="1605655211422" duration="780000" />
+      <workItem from="1605656361266" duration="1146000" />
+      <workItem from="1605876151756" duration="33007000" />
+      <workItem from="1605910838547" duration="50000" />
     </task>
     <task id="LOCAL-00001" summary="first commit, basic setup">
       <created>1604764057610</created>
@@ -229,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604940654571</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="v0.7 - Added drumpf and redditimage. Fixed tons of bugs in reddit module">
+      <created>1605105152734</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1605105152734</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,7 +271,8 @@
     <MESSAGE value="v0.21 - Minor changes, added §source" />
     <MESSAGE value="v0.5 - Implemented cog system for readability. Rewrote help to be scalable with new commands. Added option to restrict commands to only developers. Added option to ban specific subreddits." />
     <MESSAGE value="v0.6 - Added banlist to ban/unban subreddits" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.6 - Added banlist to ban/unban subreddits" />
+    <MESSAGE value="v0.7 - Added drumpf and redditimage. Fixed tons of bugs in reddit module" />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.7 - Added drumpf and redditimage. Fixed tons of bugs in reddit module" />
   </component>
   <component name="WindowStateProjectService">
     <state x="552" y="178" key="#Deployment" timestamp="1604764189754">
@@ -279,51 +296,51 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="836" y="422" key="Github.ShareDialog/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604764738554" />
-    <state width="1876" height="340" key="GridCell.Tab.0.bottom" timestamp="1605104294230">
+    <state width="1876" height="188" key="GridCell.Tab.0.bottom" timestamp="1605910396498">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
-    <state width="3028" height="191" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
-    <state width="1876" height="340" key="GridCell.Tab.0.center" timestamp="1605104294230">
+    <state width="1876" height="188" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605910396498" />
+    <state width="3028" height="188" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605896477244" />
+    <state width="1876" height="188" key="GridCell.Tab.0.center" timestamp="1605910396498">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
-    <state width="3028" height="191" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
-    <state width="1876" height="340" key="GridCell.Tab.0.left" timestamp="1605104294230">
+    <state width="1876" height="188" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605910396498" />
+    <state width="3028" height="188" key="GridCell.Tab.0.center/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605896477244" />
+    <state width="1876" height="188" key="GridCell.Tab.0.left" timestamp="1605910396497">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
-    <state width="3028" height="191" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
-    <state width="1876" height="340" key="GridCell.Tab.0.right" timestamp="1605104294230">
+    <state width="1876" height="188" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605910396497" />
+    <state width="3028" height="188" key="GridCell.Tab.0.left/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605896477243" />
+    <state width="1876" height="188" key="GridCell.Tab.0.right" timestamp="1605910396498">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294230" />
-    <state width="3028" height="191" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605051380702" />
-    <state width="1876" height="340" key="GridCell.Tab.1.bottom" timestamp="1605104294137">
+    <state width="1876" height="188" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605910396498" />
+    <state width="3028" height="188" key="GridCell.Tab.0.right/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605896477244" />
+    <state width="1876" height="340" key="GridCell.Tab.1.bottom" timestamp="1605105693418">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
-    <state width="1876" height="340" key="GridCell.Tab.1.center" timestamp="1605104294137">
+    <state width="1876" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605105693418" />
+    <state width="1876" height="340" key="GridCell.Tab.1.center" timestamp="1605105693418">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
-    <state width="1876" height="340" key="GridCell.Tab.1.left" timestamp="1605104294137">
+    <state width="1876" height="340" key="GridCell.Tab.1.center/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605105693418" />
+    <state width="1876" height="340" key="GridCell.Tab.1.left" timestamp="1605105693418">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
-    <state width="1876" height="340" key="GridCell.Tab.1.right" timestamp="1605104294137">
+    <state width="1876" height="340" key="GridCell.Tab.1.left/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605105693418" />
+    <state width="1876" height="340" key="GridCell.Tab.1.right" timestamp="1605105693418">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="340" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605104294137" />
-    <state x="2178" y="-875" width="1295" height="850" key="SettingsEditor" timestamp="1605015462513">
-      <screen x="1920" y="-1068" width="3072" height="1688" />
+    <state width="1876" height="340" key="GridCell.Tab.1.right/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605105693418" />
+    <state x="161" y="119" width="1295" height="850" key="SettingsEditor" timestamp="1605902904059">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="161" y="119" width="1295" height="850" key="SettingsEditor/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604911522806" />
+    <state x="161" y="119" width="1295" height="850" key="SettingsEditor/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605902904059" />
     <state x="2178" y="-875" key="SettingsEditor/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605015462513" />
-    <state x="2726" y="-635" key="Vcs.Push.Dialog.v2" timestamp="1604928400305">
-      <screen x="1920" y="-1068" width="3072" height="1688" />
+    <state x="504" y="267" key="Vcs.Push.Dialog.v2" timestamp="1605105158756">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="504" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604870424442" />
+    <state x="504" y="267" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605105158756" />
     <state x="2726" y="-635" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604928400305" />
     <state x="3163" y="-370" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604922704260">
       <screen x="1920" y="-1068" width="3072" height="1688" />
@@ -340,13 +357,13 @@
     </state>
     <state x="668" y="95" width="583" height="849" key="find.popup/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604839634174" />
     <state x="2989" y="-914" width="933" height="1378" key="find.popup/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604920479135" />
-    <state x="2917" y="-703" width="1076" height="1101" key="search.everywhere.popup" timestamp="1604925541254">
+    <state x="2917" y="-703" width="1076" height="1101" key="search.everywhere.popup" timestamp="1605888857660">
       <screen x="1920" y="-1068" width="3072" height="1688" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1604878043673" />
-    <state x="2917" y="-703" width="1076" height="1101" key="search.everywhere.popup/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1604925541254" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.-1068.3072.1688@0.0.1920.1040" timestamp="1605877319679" />
+    <state x="2917" y="-703" width="1076" height="1101" key="search.everywhere.popup/0.0.1920.1040/1920.-1068.3072.1688@1920.-1068.3072.1688" timestamp="1605888857660" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1605104294112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1605910177803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
