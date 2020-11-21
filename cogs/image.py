@@ -7,15 +7,14 @@ import textwrap
 from datetime import datetime
 
 
-class ImageCommands(commands.Cog):
+class Image(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.ccolor = bColors.bColors()
 
     @commands.command(name='drumpf', aliases=['dr'])
     async def drumpf(self, ctx, *, arg):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         # INVALID INPUT
@@ -104,4 +103,4 @@ class ImageCommands(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(ImageCommands(bot))
+    bot.add_cog(Image(bot))

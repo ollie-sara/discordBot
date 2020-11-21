@@ -16,8 +16,7 @@ class Help(commands.Cog):
 
     @commands.command(name='help', aliases=['h', 'halp'])
     async def myhelp(self, ctx, *args):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         auth = ctx.message.author.display_name

@@ -22,8 +22,7 @@ class Reddit(commands.Cog):
 
     @commands.command(name='printbannedsubs')
     async def printbannedsubs(self, ctx):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
         auth = ctx.message.author.display_name
         auth_img = ctx.message.author.avatar_url
@@ -43,8 +42,7 @@ class Reddit(commands.Cog):
 
     @commands.command(name='unbansub')
     async def unbansub(self, ctx, arg):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         with open(os.path.abspath('./data/bannedsubs.txt'), 'w') as f:
@@ -63,8 +61,7 @@ class Reddit(commands.Cog):
 
     @commands.command(name='bansub')
     async def bansub(self, ctx, arg):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         with open(os.path.abspath('./data/bannedsubs.txt'), 'a') as f:
@@ -80,8 +77,7 @@ class Reddit(commands.Cog):
 
     @commands.command(name='reddit', aliases=['okbr', 'r', 'redditimage', 'ri'])
     async def reddit(self, ctx, *args):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         command = str(ctx.message.content).replace('§', '')
@@ -91,17 +87,19 @@ class Reddit(commands.Cog):
 
         auth = ctx.message.author.display_name
         auth_img = ctx.message.author.avatar_url
-        sub_string = args[0].lower()
-        if '%' in sub_string:
-            sub_string = sub_string.split('%')[0]
-        if '/' in sub_string:
-            sub_string = sub_string.split('/')[0]
-        temp = sub_string
-        sub_string = ''
-        for c in temp:
-            if c in 'abcdefghijklmnopqrstuvwxyz_1234567890':
-                sub_string += c
-
+        if args:
+            sub_string = args[0].lower()
+            if '%' in sub_string:
+                sub_string = sub_string.split('%')[0]
+            if '/' in sub_string:
+                sub_string = sub_string.split('/')[0]
+            temp = sub_string
+            sub_string = ''
+            for c in temp:
+                if c in 'abcdefghijklmnopqrstuvwxyz_1234567890':
+                    sub_string += c
+        else:
+            sub_string = command
         try:
             if command == 'okbr':
                 sub = self.r_client.subreddit('okbuddyretard')

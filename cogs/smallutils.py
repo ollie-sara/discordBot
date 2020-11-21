@@ -11,8 +11,7 @@ class SmallUtils(commands.Cog):
 
     @commands.command(name='source', aliases=['s', 'info'])
     async def source(self, ctx):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         to_embed = discord.Embed(
@@ -32,8 +31,7 @@ class SmallUtils(commands.Cog):
 
     @commands.command(name='ping', aliases=['pong', 'p'])
     async def ping(self, ctx):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         command = str(ctx.message.content).replace('§', '')
@@ -53,8 +51,7 @@ class SmallUtils(commands.Cog):
 
     @commands.command(name='echo', aliases=['e'])
     async def test(self, ctx, *args):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         out = ''

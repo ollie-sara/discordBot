@@ -11,23 +11,41 @@ class Karma(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.ccolor = bColors.bColors()
-        self.users = None
-        self.posts = None
+        self.users = self.load_users()
+        self.posts = self.load_posts()
+
+    async def saving_routine(self):
+        self.save_posts()
+        print(f'{self.ccolor.OKCYAN}SAVED POSTS{self.ccolor.ENDC}')
+        self.save_users()
+        print(f'{self.ccolor.OKCYAN}SAVED USERS{self.ccolor.ENDC}')
+        self.users = self.load_users()
+        print(f'{self.ccolor.OKCYAN}LOADED USERS{self.ccolor.ENDC}')
+        self.posts = self.load_posts()
+        print(f'{self.ccolor.OKCYAN}LOADED POSTS{self.ccolor.ENDC}')
 
     @commands.command(name='postlb', aliases=['plb'])
     async def postlb(self, ctx):
-        posts = self.load_posts()
+        if await self.bot.is_restricted(ctx):
+            return
+        posts = self.posts
         posts = sorted(posts.values(), key=lambda x: x.upvotes, reverse=True)
         all_board = ''
         i = 1
         for post in posts[:5]:
-            all_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author} ({post.upvotes})\n'
+            all_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes})\n'
+            i += 1
+        posts = [post for post in posts if (datetime.now() - post.created_at).days < 30]
+        month_board = ''
+        i = 1
+        for post in posts[:5]:
+            month_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes})\n'
             i += 1
         posts = [post for post in posts if (datetime.now() - post.created_at).days < 7]
         week_board = ''
         i = 1
         for post in posts[:5]:
-            week_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author} ({post.upvotes})\n'
+            week_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes})\n'
             i += 1
         to_embed = discord.Embed(
             title='Top Messages',
@@ -42,6 +60,11 @@ class Karma(commands.Cog):
             inline=False
         )
         to_embed.add_field(
+            name='Top 5 This Month',
+            value=month_board,
+            inline=False
+        )
+        to_embed.add_field(
             name='Top 5 This Week',
             value=week_board,
             inline=False
@@ -50,8 +73,7 @@ class Karma(commands.Cog):
 
     @commands.command(name='karma', aliases=['k'])
     async def karma(self, ctx, *args):
-        if str(ctx.command) in self.bot.restricted_commands and str(ctx.message.author.id) not in self.bot.owner_ids:
-            await ctx.send('This command is currently only available to developers.')
+        if await self.bot.is_restricted(ctx):
             return
 
         if not args:
@@ -64,11 +86,11 @@ class Karma(commands.Cog):
         else:
             uid = None
         try:
-            user = self.load_users()[str(uid)]
+            user = self.users[str(uid)]
         except KeyError as e:
             if uid is not None:
                 self.add_user(uid)
-                user = self.load_users()[str(uid)]
+                user = self.users[str(uid)]
             else:
                 await ctx.send(f'Could not find specified user. Id: {uid}')
                 print(f'{self.ccolor.FAIL}KEY ERROR: {self.ccolor.ENDC}{e} not in users.json')
@@ -101,7 +123,7 @@ class Karma(commands.Cog):
         await ctx.send(embed=to_embed)
 
     async def print_leaderboard(self, ctx):
-        users = self.load_users()
+        users = self.users
         users = sorted(users.values(), key=lambda x: x.post_karma + x.link_karma, reverse=True)
         nameboard = ''
         valueboard = ''
@@ -135,7 +157,6 @@ class Karma(commands.Cog):
         await ctx.send(embed=to_embed)
 
     def change_state_user(self, user_id, change, karma_type):
-        self.users = self.load_users()
         if str(user_id) not in self.users:
             print(f'{self.ccolor.OKGREEN}ADDED USER: {self.ccolor.ENDC}{user_id}')
             self.add_user(user_id)
@@ -144,16 +165,13 @@ class Karma(commands.Cog):
             user.increase_karma(karma_type)
         elif change == 'downvote':
             user.decrease_karma(karma_type)
-        self.save_users()
 
     def change_state_post(self, message, value, increase):
-        self.posts = self.load_posts()
         if str(message.jump_url) not in self.posts:
             print(f'{self.ccolor.OKGREEN}ADDED POST: {self.ccolor.ENDC}{message.jump_url}')
             self.add_post(message)
         post = self.posts[str(message.jump_url)]
         post.change_value(value, increase)
-        self.save_posts()
 
     def check_type(self, msg):
         if len(msg.attachments) != 0:
@@ -163,16 +181,10 @@ class Karma(commands.Cog):
         return 'post'
 
     def add_user(self, user_id):
-        self.users = self.load_users()
         self.users[user_id] = User.User(user_id)
-        self.save_users()
-        self.users = self.load_users()
 
     def add_post(self, message):
-        self.posts = self.load_posts()
         self.posts[message.jump_url] = Post.Post(url=message.jump_url, mid=message.id, created_at=message.created_at, content=message.content[:20], authorname=str(message.author.display_name))
-        self.save_posts()
-        self.posts = self.load_posts()
 
     def load_users(self):
         if os.path.isfile(os.path.abspath('./data/users/users.json')):

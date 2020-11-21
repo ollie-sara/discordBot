@@ -17,12 +17,12 @@ class Post(object):
             if increase:
                 self.upvotes += 1
             else:
-                self.upvotes = max(0, self.upvotes-1)
+                self.upvotes = max(0, self.upvotes - 1)
         elif value == 'down':
             if increase:
-                self.upvotes += 1
+                self.downvotes += 1
             else:
-                self.upvotes = max(0, self.upvotes - 1)
+                self.downvotes = max(0, self.downvotes - 1)
 
 
 class PostEncoder(JSONEncoder):

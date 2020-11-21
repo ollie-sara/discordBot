@@ -147,7 +147,7 @@
             `§postlb`
         </usage>
         <description>
-            Returns the top voted tweets of all time and this week.
+            Returns the top voted messages of all time and this week.
         </description>
     </command>
 </root>
