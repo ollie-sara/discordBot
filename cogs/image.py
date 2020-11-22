@@ -1,16 +1,66 @@
-from PIL import Image, ImageFont, ImageDraw
+import PIL
 from cogs import bColors
 import discord
 from discord.ext import commands
 import os
 import textwrap
+from data.memegen import memegenerator
 from datetime import datetime
+import requests
+from io import BytesIO
 
 
 class Image(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.ccolor = bColors.bColors()
+
+    @commands.command(name='meme', aliases=['me'])
+    async def meme(self, ctx, *args):
+        if await self.bot.is_restricted(ctx):
+            return
+        if len(args) != 3:
+            await ctx.send('Incorrect usage of the command. Use `§meme <url> "<toptext>" "<bottomtext>"`.')
+            return
+        if len(args[1]) > 120 or len(args[2]) > 120:
+            await ctx.send(f'The strings you provided is too long. Limit yourself to 120 characters per line. Your top line was {len(args[1])} characters long and your bottom line {len(args[2])}')
+            return
+        await ctx.message.delete()
+        num = self.bot.current_image
+        img_url = args[0]
+        try:
+            response = requests.get(img_url)
+            template = PIL.Image.open(BytesIO(response.content))
+        except Exception as e:
+            await ctx.send('I\'m sorry, I couldn\'t use the file link you supplied. <:sadge:772760101198102528>')
+            print(f'{self.ccolor.FAIL}IMAGE ERROR:{self.ccolor.ENDC} Could not download image from {args[0]}'+str(e))
+            return
+        meme = memegenerator.make_meme(args[1].upper(), args[2].upper(), template)
+        to_embed = discord.Embed(
+            colour=discord.Colour.from_rgb(255, 0, 0)
+        )
+        if meme.mode == 'RGBA':
+            meme.save(open(os.path.abspath(f'./temp/memetemp_{num}.png'), 'wb'), 'PNG')
+            file = discord.File(os.path.abspath(f'./temp/memetemp_{num}.png'), filename=f'meme_{num}.png')
+            to_embed.set_image(
+                url=f'attachment://meme_{num}.png'
+            )
+        else:
+            meme.save(open(os.path.abspath(f'./temp/memetemp_{num}.jpg'), 'wb'), 'JPEG')
+            file = discord.File(os.path.abspath(f'./temp/memetemp_{num}.jpg'), filename=f'meme_{num}.jpg')
+            to_embed.set_image(
+                url=f'attachment://meme_{num}.jpg'
+            )
+        to_embed.set_footer(
+            text=f'created by {ctx.author.display_name}',
+            icon_url=ctx.author.avatar_url
+        )
+        await ctx.send(file=file, embed=to_embed)
+        if meme.mode == 'RGBA':
+            os.remove(os.path.abspath(f'./temp/memetemp_{num}.png'))
+        else:
+            os.remove(os.path.abspath(f'./temp/memetemp_{num}.jpg'))
+        self.bot.current_image += 1
 
     @commands.command(name='drumpf', aliases=['dr'])
     async def drumpf(self, ctx, *, arg):
@@ -40,8 +90,8 @@ class Image(commands.Cog):
             return
 
         # LOADS NECESSARY FILES
-        template = Image.open(os.path.abspath('./data/drumpf_template.jpg'))
-        segoe = ImageFont.truetype(font=os.path.abspath('./data/Segoe UI.ttf'), size=25)
+        template = PIL.Image.open(os.path.abspath('./data/drumpf_template.jpg'))
+        segoe = PIL.ImageFont.truetype(font=os.path.abspath('./data/Segoe UI.ttf'), size=25)
 
         # TAKES COPIES OF EVERY ELEMENT OF THE TWEET
         header = template.crop((0, 0, 750, 85))
@@ -49,7 +99,7 @@ class Image(commands.Cog):
         footer = template.crop((0, 85, 750, 155))
 
         # LOWERS THE NUMBER OF CHARACTERS PER LINE TO FIT THE IMAGE
-        temp = ImageDraw.Draw(Image.new('RGB', (0, 0)))
+        temp = PIL.ImageDraw.Draw(PIL.Image.new('RGB', (0, 0)))
         correct_size = False
         while not correct_size:
             correct_size = True
@@ -69,7 +119,7 @@ class Image(commands.Cog):
             template.paste(im=line, box=(0, n))
             n += spacing
         template.paste(footer, box=(0, height - 70))
-        draw = ImageDraw.Draw(template)
+        draw = PIL.ImageDraw.Draw(template)
 
         # DRAWS EVERY LINE ACCORDING TO OUR SETTINGS
         offset = 120
@@ -85,7 +135,7 @@ class Image(commands.Cog):
             offset += spacing
         curtime = datetime.now()
         footer = curtime.strftime('%I:%M %p') + ' · ' + curtime.strftime('%b %d, %Y') + ' · Twitter for Discord'
-        segoe = ImageFont.truetype(font=os.path.abspath('./data/Segoe UI.ttf'), size=18)
+        segoe = PIL.ImageFont.truetype(font=os.path.abspath('./data/Segoe UI.ttf'), size=18)
         draw.text(
             xy=(25, height - 25),
             text=footer,
@@ -97,8 +147,19 @@ class Image(commands.Cog):
 
         # OUTPUTS FINISHED TWEET
         template.save(open(os.path.abspath(f'./temp/output_{num}.jpg'), 'w'), 'JPEG')
-        # await ctx.message.delete()
-        await ctx.send(file=discord.File(os.path.abspath(f'./temp/output_{num}.jpg'), filename='drumpf.jpg'))
+        await ctx.message.delete()
+        file = discord.File(os.path.abspath(f'./temp/output_{num}.jpg'), filename='drumpf.jpg')
+        to_embed = discord.Embed(
+            colour=discord.Colour.from_rgb(29,161,242)
+        )
+        to_embed.set_image(
+            url='attachment://drumpf.jpg'
+        )
+        to_embed.set_footer(
+            text=f'created by {ctx.message.author.display_name}',
+            icon_url=ctx.message.author.avatar_url
+        )
+        await ctx.send(file=file, embed=to_embed)
         os.remove(os.path.abspath(f'./temp/output_{num}.jpg'))
 
 

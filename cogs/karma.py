@@ -24,28 +24,43 @@ class Karma(commands.Cog):
         self.posts = self.load_posts()
         print(f'{self.ccolor.OKCYAN}LOADED POSTS{self.ccolor.ENDC}')
 
+    @commands.command(name='checkpost', aliases=['chp'])
+    async def checkpost(self, ctx, *args):
+        message_id = args[0]
+        channel_id = args[1]
+        message = await (await ctx.bot.fetch_channel(channel_id)).fetch_message(message_id)
+        up = 0
+        down = 0
+        for reaction in message.reactions:
+            if str(reaction.emoji) == '<:this:747783377662378004>':
+                up = reaction.count-1
+            if str(reaction.emoji) == '<:that:758262252699779073>':
+                down = reaction.count-1
+        self.set_state_post(message, up, down)
+        await ctx.send('Checked and updated the post you supplied. Thank you admin! :relaxed:')
+
     @commands.command(name='postlb', aliases=['plb'])
     async def postlb(self, ctx):
         if await self.bot.is_restricted(ctx):
             return
         posts = self.posts
-        posts = sorted(posts.values(), key=lambda x: x.upvotes, reverse=True)
+        posts = sorted(posts.values(), key=lambda x: x.upvotes-x.downvotes, reverse=True)
         all_board = ''
         i = 1
         for post in posts[:5]:
-            all_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes})\n'
+            all_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes-post.downvotes})\n'
             i += 1
         posts = [post for post in posts if (datetime.now() - post.created_at).days < 30]
         month_board = ''
         i = 1
         for post in posts[:5]:
-            month_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes})\n'
+            month_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes-post.downvotes})\n'
             i += 1
         posts = [post for post in posts if (datetime.now() - post.created_at).days < 7]
         week_board = ''
         i = 1
         for post in posts[:5]:
-            week_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes})\n'
+            week_board += f'**{i}.** [{post.content if len(post.content) > 0 else "Message"}...]({post.message_url}) | by {post.author[:10]+("..." if len(post.author)>10 else "")} ({post.upvotes-post.downvotes})\n'
             i += 1
         to_embed = discord.Embed(
             title='Top Messages',
@@ -172,6 +187,14 @@ class Karma(commands.Cog):
             self.add_post(message)
         post = self.posts[str(message.jump_url)]
         post.change_value(value, increase)
+
+    def set_state_post(self, message, upvotes, downvotes):
+        if str(message.jump_url) not in self.posts:
+            print(f'{self.ccolor.OKGREEN}ADDED POST: {self.ccolor.ENDC}{message.jump_url}')
+            self.add_post(message)
+        post = self.posts[str(message.jump_url)]
+        post.upvotes = upvotes
+        post.downvotes = downvotes
 
     def check_type(self, msg):
         if len(msg.attachments) != 0:

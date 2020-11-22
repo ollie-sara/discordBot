@@ -15,6 +15,10 @@
             <name>§drumpf</name>
             <description>Prints a tweet with your text from the United States presidents' Twitter account.</description>
         </command>
+        <command>
+            <name>§meme</name>
+            <description>With a given image url and top and bottom string, returns an impact font meme.</description>
+        </command>
     </category>
     <category>
         <cname>Utility</cname>
@@ -44,6 +48,14 @@
         <command>
             <name>§reload</name>
             <description>Reloads all cogs.</description>
+        </command>
+        <command>
+            <name>§restart</name>
+            <description>Restarts vital bot processes.</description>
+        </command>
+        <command>
+            <name>§checkpost</name>
+            <description>Checks a given message_id in a given channel_id. Updates top post archive.</description>
         </command>
         <command>
             <name>§bansub</name>

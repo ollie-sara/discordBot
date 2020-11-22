@@ -1,110 +1,58 @@
 # -*- coding: utf-8 -*-
+import textwrap
 
 import PIL
-from PIL import ImageFont
-from PIL import Image
-from PIL import ImageDraw
-
+from PIL import ImageFont, ImageDraw, Image
+import os
 import sys
 
 
-def make_meme(topString, bottomString, filename):
-
-	img = Image.open(filename)
-	imageSize = img.size
-
-	# find biggest font size that works
-	fontSize = int(imageSize[1]/5)
-	font = ImageFont.truetype("/Library/Fonts/Impact.ttf", fontSize)
-	topTextSize = font.getsize(topString)
-	bottomTextSize = font.getsize(bottomString)
-	while topTextSize[0] > imageSize[0]-20 or bottomTextSize[0] > imageSize[0]-20:
-		fontSize = fontSize - 1
-		font = ImageFont.truetype("/Library/Fonts/Impact.ttf", fontSize)
-		topTextSize = font.getsize(topString)
-		bottomTextSize = font.getsize(bottomString)
-
-	# find top centered position for top text
-	topTextPositionX = (imageSize[0]/2) - (topTextSize[0]/2)
-	topTextPositionY = 0
-	topTextPosition = (topTextPositionX, topTextPositionY)
-
-	# find bottom centered position for bottom text
-	bottomTextPositionX = (imageSize[0]/2) - (bottomTextSize[0]/2)
-	bottomTextPositionY = imageSize[1] - bottomTextSize[1]
-	bottomTextPosition = (bottomTextPositionX, bottomTextPositionY)
-
+def make_meme(topString, bottomString, img) -> Image:
+	fontsize = int(round(img.size[1] / 6))
 	draw = ImageDraw.Draw(img)
-
-	# draw outlines
-	# there may be a better way
-	outlineRange = int(fontSize/15)
-	for x in range(-outlineRange, outlineRange+1):
-		for y in range(-outlineRange, outlineRange+1):
-			draw.text((topTextPosition[0]+x, topTextPosition[1]+y), topString, (0,0,0), font=font)
-			draw.text((bottomTextPosition[0]+x, bottomTextPosition[1]+y), bottomString, (0,0,0), font=font)
-
-	draw.text(topTextPosition, topString, (255,255,255), font=font)
-	draw.text(bottomTextPosition, bottomString, (255,255,255), font=font)
-
-	img.save("temp.png")
-
-def get_upper(somedata):
-	'''
-	Handle Python 2/3 differences in argv encoding
-	'''
-	result = ''
-	try:
-		result = somedata.decode("utf-8").upper()
-	except:
-		result = somedata.upper()
-	return result
-
-def get_lower(somedata):
-	'''
-	Handle Python 2/3 differences in argv encoding
-	'''
-	result = ''
-	try:
-		result = somedata.decode("utf-8").lower()
-	except:
-		result = somedata.lower()		
-
-	return result
-
-
-
-if __name__ == '__main__':
-
-	args_len = len(sys.argv)
-	topString = ''
-	meme = 'standard'
-
-	if args_len == 1:
-		# no args except the launch of the script
-		print('args plz')
-
-	elif args_len == 2:
-		# only one argument, use standard meme
-		bottomString = get_upper(sys.argv[-1])
-
-	elif args_len == 3:
-		# args give meme and one line
-		bottomString = get_upper(sys.argv[-1])
-		meme = get_lower(sys.argv[1])
-
-	elif args_len == 4:
-		# args give meme and two lines
-		topString = get_upper(sys.argv[-2])
-		bottomString = get_upper(sys.argv[-1])
-		meme = get_lower(sys.argv[1])
-	else:
-		# so many args
-		# what do they mean
-		# too intense
-		print('to many argz')
-
-	print(meme)	
-	filename = str(meme)+'.jpg'
-	make_meme(topString, bottomString, filename)	
-
+	impact = ImageFont.truetype(font=os.path.abspath('./data/impact.ttf'), size=fontsize)
+	top_strings = textwrap.wrap(topString, width=40)
+	bottom_strings = textwrap.wrap(bottomString, width=40)
+	longest_top_string = ' '
+	longest_bottom_string = ' '
+	for string in top_strings:
+		if draw.textsize(string, impact)[0] > draw.textsize(longest_top_string, impact)[0]:
+			longest_top_string = string
+	for string in bottom_strings:
+		if draw.textsize(string, impact)[0] > draw.textsize(longest_bottom_string, impact)[0]:
+			longest_bottom_string = string
+	while draw.textsize(longest_top_string, impact)[0] > (img.size[0]-10):
+		fontsize -= 1
+		impact = ImageFont.truetype(font=os.path.abspath('./data/impact.ttf'), size=fontsize)
+	i = 0
+	for string in top_strings:
+		draw.text(
+			anchor='ms',
+			font=impact,
+			text=string,
+			xy=(int(round(img.size[0]/2)), fontsize+2+(i*(fontsize+2))),
+			align='center',
+			fill=(255, 255, 255),
+			stroke_fill=(0, 0, 0),
+			stroke_width=int(round(fontsize/20))
+		)
+		i += 1
+	fontsize = int(round(img.size[1]/6))
+	impact = ImageFont.truetype(font=os.path.abspath('./data/impact.ttf'), size=fontsize)
+	while draw.textsize(longest_bottom_string, impact)[0] > (img.size[0]-10):
+		fontsize -= 1
+		impact = ImageFont.truetype(font=os.path.abspath('./data/impact.ttf'), size=fontsize)
+	i = 0
+	for string in bottom_strings:
+		draw.text(
+			anchor='ms',
+			font=impact,
+			text=string,
+			xy=(int(round(img.size[0]/2)), img.size[1]-10-(len(bottom_strings)-1-i)*(fontsize+2)),
+			align='center',
+			fill=(255, 255, 255),
+			stroke_fill=(0, 0, 0),
+			stroke_width=int(round(fontsize/20))
+		)
+		i += 1
+	return img

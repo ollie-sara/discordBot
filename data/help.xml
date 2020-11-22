@@ -150,4 +150,28 @@
             Returns the top voted messages of all time and this week.
         </description>
     </command>
+    <command>
+        <name>meme</name>
+        <aliases>
+            <a>me</a>
+        </aliases>
+        <usage>
+            `§meme &lt;url&gt; "&lt;top text&gt;" "&lt;bottom text&gt;"`
+        </usage>
+        <description>
+            Given an image url (.jpg and .png only), a top text and a bottom text, returns an impact meme. You must use `""` to provide text with multiple words. Per text there is a 120 character limit.
+        </description>
+    </command>
+    <command>
+        <name>checkpost</name>
+        <aliases>
+            <a>chp</a>
+        </aliases>
+        <usage>
+            `§checkpost &lt;message_id&gt; &lt;channel_id&gt;`
+        </usage>
+        <description>
+            Admin-only. Updates the post-data for top post with a given message_id and channel_id
+        </description>
+    </command>
 </root>

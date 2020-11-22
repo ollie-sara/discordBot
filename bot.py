@@ -33,18 +33,27 @@ async def on_command_error(_, error):
 
 @bot.event
 async def on_reaction_add(reaction, user):
-    await bot.get_cog('BotProcesses').on_reaction_add(reaction, user)
+    #await bot.get_cog('BotProcesses').on_reaction_add(reaction, user)
+    pass
 
 
 @bot.event
 async def on_reaction_remove(reaction, user):
-    await bot.get_cog('BotProcesses').on_reaction_remove(reaction, user)
+    #await bot.get_cog('BotProcesses').on_reaction_remove(reaction, user)
+    pass
 
 
 @bot.event
 async def on_ready():
     await bot.get_cog('BotProcesses').ainit()
 
+@bot.event
+async def on_raw_reaction_add(payload):
+    await bot.get_cog('BotProcesses').on_raw_reaction_add(payload)
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    await bot.get_cog('BotProcesses').on_raw_reaction_remove(payload)
 
 @bot.command(name='restart')
 async def restart(ctx):
