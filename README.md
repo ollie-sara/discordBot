@@ -23,4 +23,3 @@ I started writing this bot in my first semester studying CS at ETH Zurich. I've 
 
 ___
 
-###### The logo is purposefully chosen to be inflammatory. It is supposed to be a lighthearted, self-depracating joke, as this bot is used on a server with predominantly CS students, and I am a CS student, as well.
