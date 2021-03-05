@@ -2,15 +2,14 @@
 
 <root>
     <category>
+        <cname>Karma Kasino</cname>
+        <command>
+            <name>§bet</name>
+            <description>Bet on an option in a currently running karma kasino.</description>
+        </command>
+    </category>
+    <category>
         <cname>Media</cname>
-        <command>
-            <name>§reddit</name>
-            <description>Returns a random post from a specified subreddit.</description>
-        </command>
-        <command>
-            <name>§redditimage</name>
-            <description>Returns a random image from a specified subreddit.</description>
-        </command>
         <command>
             <name>§drumpf</name>
             <description>Prints a tweet with your text from the United States presidents' Twitter account.</description>
@@ -58,16 +57,20 @@
             <description>Checks a given message_id in a given channel_id. Updates top post archive.</description>
         </command>
         <command>
-            <name>§bansub</name>
-            <description>Bans a subreddit from being called by users.</description>
+            <name>§openkasino</name>
+            <description>Opens a new instance of the karma kasino (Only one at a time).</description>
         </command>
         <command>
-            <name>§unbansub</name>
-            <description>Unbans a subreddit to be called by users.</description>
+            <name>§lockkasino</name>
+            <description>Locks current karma kasino so that no new bets can be made.</description>
         </command>
         <command>
-            <name>§printbannedsubs</name>
-            <description>Returns the current list of banned subreddits.</description>
+            <name>§closekasino</name>
+            <description>Closes the running instance of the karma kasino.</description>
+        </command>
+        <command>
+            <name>§refreshkasino</name>
+            <description>Replaces old karma kasino message with a new message.</description>
         </command>
     </category>
 </root>

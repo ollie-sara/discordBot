@@ -11,24 +11,29 @@ class BotProcesses(commands.Cog):
         self.bot = bot
         self.ccolor = bColors.bColors()
         self.modules = [
-            'reddit',
             'help',
             'smallutils',
             'image',
-            'karma'
+            'karma',
+            'kasino'
         ]
         bot.owner_ids = [
             '108305736131440640',   # OLLIE
             '153929916977643521',   # BATTLERUSH
             '205704051856244736',   # SPRÜTZ
-            '299478604809764876'    # AARON
+            '299478604809764876',   # AARON
+            '223932775474921472'    # LUKAS
         ]
         bot.restricted_commands = [
             'bansub',
             'unbansub',
             'reload',
             'restart',
-            'checkpost'
+            'checkpost',
+            'openkasino',
+            'refreshkasino',
+            'closekasino',
+            'lockkasino'
         ]
         self.loop = None
 
@@ -69,7 +74,7 @@ class BotProcesses(commands.Cog):
                 print(f'{self.ccolor.FAIL}BACKGROUND LOOP ERROR:{self.ccolor.ENDC} COULD NOT START BACKGROUND LOOP | ' + str(e))
                 return
             print(f'{self.ccolor.OKBLUE}BACKGROUND LOOP:{self.ccolor.ENDC} FINISHED LOOP SUCCESSFULLY')
-            await asyncio.sleep(600)
+            await asyncio.sleep(120)
 
     async def on_raw_reaction_add(self, payload):
         bot = self.bot
@@ -78,12 +83,12 @@ class BotProcesses(commands.Cog):
         message = await (await bot.fetch_channel(payload.channel_id)).fetch_message(payload.message_id)
         if str(emoji) == '<:this:747783377662378004>' and message.author.id != member.id and not member.bot:
             bot.get_cog('Karma').change_state_user(user_id=message.author.id, change='upvote',
-                                                   karma_type=bot.get_cog('Karma').check_type(message))
+                                                   karma_type=bot.get_cog('Karma').check_type(message), amount=1)
             bot.get_cog('Karma').change_state_post(message=message,
                                                    value='up', increase=True)
         elif str(emoji) == '<:that:758262252699779073>' and message.author.id != payload.member.id and not member.bot:
             bot.get_cog('Karma').change_state_user(user_id=message.author.id, change='downvote',
-                                                   karma_type=bot.get_cog('Karma').check_type(message))
+                                                   karma_type=bot.get_cog('Karma').check_type(message), amount=1)
             bot.get_cog('Karma').change_state_post(message=message,
                                                    value='down', increase=True)
 
@@ -94,12 +99,12 @@ class BotProcesses(commands.Cog):
         message = await (await bot.fetch_channel(payload.channel_id)).fetch_message(payload.message_id)
         if str(emoji) == '<:this:747783377662378004>' and message.author.id != member.id and not member.bot:
             bot.get_cog('Karma').change_state_user(user_id=message.author.id, change='downvote',
-                                                   karma_type=bot.get_cog('Karma').check_type(message))
+                                                   karma_type=bot.get_cog('Karma').check_type(message), amount=1)
             bot.get_cog('Karma').change_state_post(message=message,
                                                    value='up', increase=False)
         elif str(emoji) == '<:that:758262252699779073>' and message.author.id != member.id and not member.bot:
             bot.get_cog('Karma').change_state_user(user_id=message.author.id, change='upvote',
-                                                   karma_type=bot.get_cog('Karma').check_type(message))
+                                                   karma_type=bot.get_cog('Karma').check_type(message), amount=1)
             bot.get_cog('Karma').change_state_post(message=message,
                                                    value='down', increase=False)
 

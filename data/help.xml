@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <command>
+        <name>lockkasino</name>
+        <aliases>
+            <a>lokas</a>
+        </aliases>
+        <usage>
+            `§lockkasino`
+        </usage>
+        <description>
+            Admin-only. Locks the current karma kasino, so that no new bets can be made.
+        </description>
+    </command>
+    <command>
+        <name>openkasino</name>
+        <aliases>
+            <a>okas</a>
+        </aliases>
+        <usage>
+            `§openkasino &lt;question&gt; &lt;option 1 text&gt; &lt;option 2 text&gt;`
+        </usage>
+        <description>
+            Admin-only. Creates new karma kasino for people to bet in. Doesn't work if there is an instance of a casino already open somewhere.
+        </description>
+    </command>
+    <command>
+        <name>closekasino</name>
+        <aliases>
+            <a>clokas</a>
+        </aliases>
+        <usage>
+            `§closekasino &lt;1, 2 or 3&gt;`
+        </usage>
+        <description>
+            Admin-only. Closes last instance of the karma kasino. Pass 1 for option 1 to win, pass 2 for option 2 to win and pass 3 to cancel and refund.
+        </description>
+    </command>
+    <command>
+        <name>refreshkasino</name>
+        <aliases>
+            <a>rekas</a>
+        </aliases>
+        <usage>
+            `§refreshkasino`
+        </usage>
+        <description>
+            Admin-only. Used to renew karma kasino to a new message, so that people see it again. Doing this manually avoids clutter and spam.
+        </description>
+    </command>
+    <command>
+        <name>bet</name>
+        <aliases><a>b</a></aliases>
+        <usage>
+            `§bet &lt;karma amount&gt; &lt;1 or 2&gt;`
+        </usage>
+        <description>
+            Bets the specified amount of karma in the current karma kasino on the specified option. If your option wins, you receive your karma back, including a proportional amount of karma bet on the opposite option. Gamba! :game_die:
+        </description>
+    </command>
+    <command>
         <name>help</name>
         <aliases>
             <a>h</a>
@@ -11,19 +69,6 @@
         </usage>
         <description>
             Returns list of commands or specific instructions on the command specified by `&lt;command&gt;`
-        </description>
-    </command>
-    <command>
-        <name>reddit</name>
-        <aliases>
-            <a>r</a>
-            <a>okbr</a>
-        </aliases>
-        <usage>
-            `§reddit &lt;subreddit&gt;`
-        </usage>
-        <description>
-            Returns a random post of the specified subreddit under `&lt;subreddit&gt;` (without 'r/'). Specifying `random` returns a random post from a random subreddit. Use `§okbr` to return a random post from `r/okbuddyretard`.&#xD;&#xD;Any post returned is marked SFW on reddit.
         </description>
     </command>
     <command>
@@ -65,42 +110,6 @@
         </description>
     </command>
     <command>
-        <name>bansub</name>
-        <aliases>
-            <a>none</a>
-        </aliases>
-        <usage>
-            `§bansub &lt;subreddit&gt;`
-        </usage>
-        <description>
-            Admin-only. Bans bad subreddits from being used by assholes.
-        </description>
-    </command>
-    <command>
-        <name>unbansub</name>
-        <aliases>
-            <a>none</a>
-        </aliases>
-        <usage>
-            `§unbansub &lt;subreddit&gt;`
-        </usage>
-        <description>
-            Admin-only. Unbans previously banned subreddits to, once again, be used by assholes.
-        </description>
-    </command>
-    <command>
-        <name>printbannedsubs</name>
-        <aliases>
-            <a>none</a>
-        </aliases>
-        <usage>
-            `§printbannedsubs &lt;subreddit&gt;`
-        </usage>
-        <description>
-            Prints a list of all banned subreddits.
-        </description>
-    </command>
-    <command>
         <name>drumpf</name>
         <aliases>
             <a>dr</a>
@@ -110,18 +119,6 @@
         </usage>
         <description>
             Returns a tweet from the President of the United States with whatever you passed through `&lt;text&gt;`
-        </description>
-    </command>
-    <command>
-        <name>redditimage</name>
-        <aliases>
-            <a>ri</a>
-        </aliases>
-        <usage>
-            `§redditimage &lt;subreddit&gt;`
-        </usage>
-        <description>
-            Returns a random image or gif from a given subreddit passed in `&lt;subreddit&gt;`
         </description>
     </command>
     <command>

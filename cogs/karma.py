@@ -24,8 +24,20 @@ class Karma(commands.Cog):
         self.posts = self.load_posts()
         print(f'{self.ccolor.OKCYAN}LOADED POSTS{self.ccolor.ENDC}')
 
+    def force_save(self):
+        self.save_posts()
+        print(f'{self.ccolor.OKCYAN}SAVED POSTS{self.ccolor.ENDC}')
+        self.save_users()
+        print(f'{self.ccolor.OKCYAN}SAVED USERS{self.ccolor.ENDC}')
+        self.users = self.load_users()
+        print(f'{self.ccolor.OKCYAN}LOADED USERS{self.ccolor.ENDC}')
+        self.posts = self.load_posts()
+        print(f'{self.ccolor.OKCYAN}LOADED POSTS{self.ccolor.ENDC}')
+
     @commands.command(name='checkpost', aliases=['chp'])
     async def checkpost(self, ctx, *args):
+        if await self.bot.is_restricted(ctx):
+            return
         message_id = args[0]
         channel_id = args[1]
         message = await (await ctx.bot.fetch_channel(channel_id)).fetch_message(message_id)
@@ -91,6 +103,8 @@ class Karma(commands.Cog):
         if await self.bot.is_restricted(ctx):
             return
 
+        await ctx.message.delete()
+
         if not args:
             uid = ctx.author.id
         elif len(ctx.message.raw_mentions) != 0:
@@ -122,6 +136,11 @@ class Karma(commands.Cog):
             url=ctx.guild.get_member(uid).avatar_url
         )
         to_embed.add_field(
+            name='Total Karma',
+            inline=True,
+            value=(user.post_karma+user.link_karma)
+        )
+        to_embed.add_field(
             name='Post Karma',
             inline=True,
             value=user.post_karma
@@ -135,7 +154,7 @@ class Karma(commands.Cog):
             text='called by ' + auth,
             icon_url=auth_img
         )
-        await ctx.send(embed=to_embed)
+        await ctx.send(embed=to_embed, delete_after=20)
 
     async def print_leaderboard(self, ctx):
         users = self.users
@@ -171,15 +190,15 @@ class Karma(commands.Cog):
         )
         await ctx.send(embed=to_embed)
 
-    def change_state_user(self, user_id, change, karma_type):
+    def change_state_user(self, user_id, change, karma_type, amount):
         if str(user_id) not in self.users:
             print(f'{self.ccolor.OKGREEN}ADDED USER: {self.ccolor.ENDC}{user_id}')
             self.add_user(user_id)
         user = self.users[str(user_id)]
         if change == 'upvote':
-            user.increase_karma(karma_type)
+            user.increase_karma(karma_type, amount)
         elif change == 'downvote':
-            user.decrease_karma(karma_type)
+            user.decrease_karma(karma_type, amount)
 
     def change_state_post(self, message, value, increase):
         if str(message.jump_url) not in self.posts:

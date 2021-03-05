@@ -7,19 +7,19 @@ class User(object):
         self.post_karma = post
         self.link_karma = link
 
-    def increase_karma(self, karma_type):
+    def increase_karma(self, karma_type, amount):
         if karma_type == 'post':
-            self.post_karma += 1
+            self.post_karma += amount
         elif karma_type == 'link':
-            self.link_karma += 1
+            self.link_karma += amount
         else:
             raise RuntimeError(f'Cannot increase Karma of type {karma_type}')
 
-    def decrease_karma(self, karma_type):
+    def decrease_karma(self, karma_type, amount):
         if karma_type == 'post':
-            self.post_karma = max(0, self.post_karma-1)
+            self.post_karma = max(0, self.post_karma-amount)
         elif karma_type == 'link':
-            self.link_karma = max(0, self.link_karma-1)
+            self.link_karma = max(0, self.link_karma-amount)
         else:
             raise RuntimeError(f'Cannot increase Karma of type {karma_type}')
 

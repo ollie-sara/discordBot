@@ -1,4 +1,5 @@
 import discord
+import requests
 from discord.ext import commands
 import praw
 from dotenv import load_dotenv
@@ -157,6 +158,8 @@ class Reddit(commands.Cog):
                 else:
                     await ctx.send('Couldn\'t find any sendable posts. Maybe another subreddit?')
                 return
+            url = vars(post).get('url_overridden_by_dest')
+
             post_title = post.title
             if len(post.title) > 256:
                 post_title = post.title[0:252]+'...'
@@ -166,7 +169,7 @@ class Reddit(commands.Cog):
                 color=discord.Colour.from_rgb(55, 133, 245)
             )
             to_embed.set_author(
-                name='u/'+post.author.name + ' | from: r/' + sub.display_name + ' | UP: ' + str(post.score) + ' | DOWN: ' + str(round(post.score*(1-post.upvote_ratio))) + ' | Comments: ' + str(post.num_comments)
+                name='from: r/' + sub.display_name + ' | UP: ' + str(post.score) + ' | DOWN: ' + str(round(post.score*(1-post.upvote_ratio))) + ' | Comments: ' + str(post.num_comments)
             )
             to_embed.set_footer(
                 text='called by ' + auth,
