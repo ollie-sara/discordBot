@@ -59,6 +59,35 @@ class SmallUtils(commands.Cog):
             out += a + ' '
         await ctx.send(out)
 
+    @commands.command(name='suggest', aliases=['sug','sugg'])
+    async def suggest(self, ctx, *, arg):
+        if await self.bot.is_restricted(ctx):
+            return
+
+        await ctx.message.delete()
+
+        if not arg:
+            await ctx.send('Incorrect use of the command. Refer to `§help suggest` for further instructions.', delete_after=10)
+            return
+
+        suggestion = str(arg)
+        author = ctx.author.name
+        author_img = ctx.author.avatar_url
+
+        to_embed = discord.Embed(
+            title='You have a new suggestion:',
+            description=suggestion,
+            color=discord.Colour.from_rgb(50, 168, 82)
+        )
+        to_embed.set_footer(
+            text=author,
+            icon_url=author_img
+        )
+
+        await self.bot.get_user(108305736131440640).send(embed=to_embed)
+        await ctx.send('Your suggestion has been sent successfully!', delete_after=10)
+        return
+
 
 def setup(bot):
     bot.add_cog(SmallUtils(bot))

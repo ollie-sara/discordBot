@@ -74,7 +74,7 @@ class BotProcesses(commands.Cog):
                 print(f'{self.ccolor.FAIL}BACKGROUND LOOP ERROR:{self.ccolor.ENDC} COULD NOT START BACKGROUND LOOP | ' + str(e))
                 return
             print(f'{self.ccolor.OKBLUE}BACKGROUND LOOP:{self.ccolor.ENDC} FINISHED LOOP SUCCESSFULLY')
-            await asyncio.sleep(120)
+            await asyncio.sleep(600)
 
     async def on_raw_reaction_add(self, payload):
         bot = self.bot

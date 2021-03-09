@@ -1,9 +1,7 @@
 import math
-
-from data.kasino import KasinoSession
 import discord
-import json
 import os
+import sqlite3
 from discord.ext import commands
 from cogs import bColors
 
@@ -12,27 +10,40 @@ class Kasino(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.ccolor = bColors.bColors()
-        self.kasino = self.load_session()
 
     @commands.command(name='openkasino', aliases=['okas'])
     async def openkasino(self, ctx, *args):
         if await self.bot.is_restricted(ctx):
             return
+        karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
+        backupdb = sqlite3.connect(os.path.abspath('./data/backup/kasino_karma.db'))
+        cursor = karmadb.cursor()
+        cursor.execute('SELECT * FROM kasino')
+        session = cursor.fetchone()
 
-        if self.kasino is not None:
+        if session is not None:
             await ctx.author.send('Kasino is currently open, close last session to open a new one.')
+            cursor.close()
+            karmadb.close()
             return
 
         if not args:
             await ctx.author.send('Incorrect usage of `§openkasino`. Please refer to `§help openkasino`')
             print(f'{self.ccolor.FAIL}OPENKASINO ERROR{self.ccolor.ENDC}: No arguments passed')
+            cursor.close()
+            karmadb.close()
             return
         elif len(args) != 3:
             await ctx.author.send('Incorrect usage of `§openkasino`. Please refer to `§help openkasino`')
             print(f'{self.ccolor.FAIL}OPENKASINO ERROR{self.ccolor.ENDC}: Incorrect number of arguments passed')
+            cursor.close()
+            karmadb.close()
             return
 
         await ctx.message.delete()
+        karmadb.backup(backupdb)
+        backupdb.commit()
+        backupdb.close()
 
         question = args[0]
         optionA = args[1]
@@ -40,9 +51,20 @@ class Kasino(commands.Cog):
 
         to_embed = discord.Embed()
         kasinomsg = await ctx.send(embed=to_embed)
-        self.kasino = KasinoSession.KasinoSession(question, optionA, optionB, 0, 0, 0, kasinomsg.guild.id, kasinomsg.channel.id, kasinomsg.id)
+        cursor.execute(f'INSERT INTO kasino (question, option_a, option_b, guild_id, channel_id, message_id) '
+                       f'VALUES("{str(question)}", "{str(optionA)}", "{str(optionB)}", {kasinomsg.guild.id}, {kasinomsg.channel.id}, {kasinomsg.id})')
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS a_bets('
+                       f'id INTEGER PRIMARY KEY,'
+                       f'user_id INTEGER NOT NULL,'
+                       f'amount INTEGER DEFAULT 0);')
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS b_bets('
+                       f'id INTEGER PRIMARY KEY,'
+                       f'user_id INTEGER NOT NULL,'
+                       f'amount INTEGER DEFAULT 0);')
+        cursor.close()
+        karmadb.commit()
+        karmadb.close()
         await self.update_kasino()
-        self.save_session()
         return
 
     @commands.command(name='refreshkasino', aliases=['rekas'])
@@ -51,20 +73,30 @@ class Kasino(commands.Cog):
             return
 
         await ctx.message.delete()
-        if self.kasino is None:
+        karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
+        cursor = karmadb.cursor()
+        cursor.execute('SELECT * FROM kasino')
+        session = cursor.fetchone()
+
+        if session is None:
             await ctx.author.send('Currently, no kasino is open. Use `§openkasino "<question>" "<option A>" "<option B>"` to start a bet.')
             print(f'{self.ccolor.FAIL}REFRESHKASINO ERROR{self.ccolor.ENDC}: No kasino open')
+            cursor.close()
+            karmadb.close()
             return
+        try:
+            kmsg = await (await self.bot.fetch_channel(session[10])).fetch_message(session[11])
+            await kmsg.delete()
+        except Exception:
+            pass
 
-        kmsg = await (await self.bot.fetch_channel(self.kasino.channelID)).fetch_message(self.kasino.messageID)
-        await kmsg.delete()
         to_embed = discord.Embed()
         kasinomsg = await ctx.send(embed=to_embed)
-        self.kasino.guildID = kasinomsg.guild.id
-        self.kasino.channelID = kasinomsg.channel.id
-        self.kasino.messageID = kasinomsg.id
+        cursor.execute(f'UPDATE kasino SET guild_id={kasinomsg.guild.id}, channel_id={kasinomsg.channel.id}, message_id={kasinomsg.id}')
+        cursor.close()
+        karmadb.commit()
+        karmadb.close()
         await self.update_kasino()
-        self.save_session()
         return
 
     @commands.command(name='lockkasino', aliases=['lokas'])
@@ -73,19 +105,29 @@ class Kasino(commands.Cog):
             return
 
         await ctx.message.delete()
+        karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
+        cursor = karmadb.cursor()
+        cursor.execute('SELECT * FROM kasino')
+        session = cursor.fetchone()
 
-        if self.kasino is None:
+        if session is None:
             await ctx.author.send('Currently, no kasino is open. Use `§openkasino "<question>" "<option A>" "<option B>"` to start a bet.')
             print(f'{self.ccolor.FAIL}LOCKKASINO ERROR{self.ccolor.ENDC}: No kasino open')
+            cursor.close()
+            karmadb.close()
             return
-        if self.kasino.locked:
+        if session[12]:
             await ctx.author.send('Kasino is already locked.')
-            print(f'{self.ccolor.FAIL}LOCKKASINO ERROR{self.ccolor.ENDC}: No kasino open')
+            print(f'{self.ccolor.FAIL}LOCKKASINO ERROR{self.ccolor.ENDC}: Kasino already locked')
+            cursor.close()
+            karmadb.close()
             return
 
-        self.kasino.locked = True
+        cursor.execute(f'UPDATE kasino SET locked=TRUE')
+        cursor.close()
+        karmadb.commit()
+        karmadb.close()
         await self.update_kasino()
-        self.save_session()
         return
 
     @commands.command(name='closekasino', aliases=['clokas'])
@@ -98,142 +140,164 @@ class Kasino(commands.Cog):
 
         await ctx.message.delete()
 
-        if self.kasino is None:
+        karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
+        cursor = karmadb.cursor()
+        cursor.execute('SELECT * FROM kasino')
+        session = cursor.fetchone()
+
+        if session is None:
             await ctx.author.send('Currently, no kasino is open. Use `§openkasino "<question>" "<option A>" "<option B>"` to start a bet.')
             print(f'{self.ccolor.FAIL}CLOSEKASINO ERROR{self.ccolor.ENDC}: No kasino open')
+            cursor.close()
+            karmadb.close()
             return
 
         if arg is None:
             await ctx.author.send('Incorrect usage of `§closekasino`. Please refer to `§help closekasino`')
             print(f'{self.ccolor.FAIL}CLOSEKASINO ERROR{self.ccolor.ENDC}: No arguments passed')
+            cursor.close()
+            karmadb.close()
             return
         if int(arg) < 1 or int(arg) > 3:
             await ctx.author.send('Incorrect usage of `§closekasino`. Please refer to `§help closekasino`')
             print(f'{self.ccolor.FAIL}CLOSEKASINO ERROR{self.ccolor.ENDC}: Argument is not 1, 2 or 3')
+            cursor.close()
+            karmadb.close()
             return
 
-
-        karmaSystem = self.bot.get_cog('Karma')
         to_embed = None
+        cursor.execute('SELECT user_id, amount FROM a_bets')
+        a_bets = cursor.fetchall()
+        cursor.execute('SELECT user_id, amount FROM b_bets')
+        b_bets = cursor.fetchall()
 
         # ABORT AND RETURN
         if int(arg) == 3:
-            for b in self.kasino.optionABets.values():
-                postkarma = karmaSystem.users[str(b.userID)].post_karma
-                linkkarma = karmaSystem.users[str(b.userID)].link_karma
+            for b in a_bets:
+                postkarma = cursor.execute(f'SELECT post_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
+                linkkarma = cursor.execute(f'SELECT link_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
                 if postkarma + linkkarma == 0:
                     postToAll = 0.5
                 else:
                     postToAll = float(postkarma / (postkarma + linkkarma))
-                postAmount = round(float(b.amount * postToAll))
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'post', postAmount)
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'link', b.amount-postAmount)
+                postAmount = round(float(b[1] * postToAll))
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'post', postAmount)
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'link', b[1]-postAmount)
+                user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={b[0]}').fetchone()
                 output = discord.Embed(
-                    title=f'**You\'ve been refunded {b.amount} karma.**',
+                    title=f'**You\'ve been refunded {b[1]} karma.**',
                     color=discord.Colour.from_rgb(52, 79, 235),
-                    description=f'Remaining karma => Total: {karmaSystem.users[str(b.userID)].post_karma+karmaSystem.users[str(b.userID)].link_karma} Post: {karmaSystem.users[str(b.userID)].post_karma} | Link: {karmaSystem.users[str(b.userID)].link_karma}'
+                    description=f'Remaining karma => Total: {user[0]+user[1]} Post: {user[0]} | Link: {user[1]}'
                 )
-                await (await self.bot.fetch_user(b.userID)).send(embed=output)
-            for b in self.kasino.optionBBets.values():
-                postkarma = karmaSystem.users[str(b.userID)].post_karma
-                linkkarma = karmaSystem.users[str(b.userID)].link_karma
+                await (await self.bot.fetch_user(b[0])).send(embed=output)
+            for b in b_bets:
+                postkarma = cursor.execute(f'SELECT post_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
+                linkkarma = cursor.execute(f'SELECT link_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
                 if postkarma + linkkarma == 0:
                     postToAll = 0.5
                 else:
                     postToAll = float(postkarma / (postkarma + linkkarma))
-                postAmount = round(float(b.amount * postToAll))
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'post', postAmount)
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'link', b.amount-postAmount)
+                postAmount = round(float(b[1] * postToAll))
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'post', postAmount)
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'link', b[1] - postAmount)
+                user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={b[0]}').fetchone()
                 output = discord.Embed(
-                    title=f'**You\'ve been refunded {b.amount} karma.**',
+                    title=f'**You\'ve been refunded {b[1]} karma.**',
                     color=discord.Colour.from_rgb(52, 79, 235),
-                    description=f'Remaining karma => Total: {karmaSystem.users[str(b.userID)].post_karma+karmaSystem.users[str(b.userID)].link_karma} Post: {karmaSystem.users[str(b.userID)].post_karma} | Link: {karmaSystem.users[str(b.userID)].link_karma}'
+                    description=f'Remaining karma => Total: {user[0]+user[1]} Post: {user[0]} | Link: {user[1]}'
                 )
-                await (await self.bot.fetch_user(b.userID)).send(embed=output)
+                await (await self.bot.fetch_user(b[0])).send(embed=output)
             to_embed = discord.Embed(
-                title=f':game_die: "{self.kasino.question}" has been cancelled.',
-                description=f'Amount bet will be refunded to each user.\nReturned: {self.kasino.amountA + self.kasino.amountB} Karma',
+                title=f':game_die: "{session[1]}" has been cancelled.',
+                description=f'Amount bet will be refunded to each user.\nReturned: {session[7] + session[8]} Karma',
                 color=discord.Colour.from_rgb(52, 79, 235)
             )
         # OPTION 1 WINS
         elif int(arg) == 1:
-            for b in self.kasino.optionABets.values():
-                postkarma = karmaSystem.users[str(b.userID)].post_karma
-                linkkarma = karmaSystem.users[str(b.userID)].link_karma
-                if self.kasino.amountB == 0:
-                    totalWon = b.amount
+            for b in a_bets:
+                postkarma = cursor.execute(f'SELECT post_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
+                linkkarma = cursor.execute(f'SELECT link_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
+                if session[8] == 0:
+                    totalWon = b[1]
                 else:
-                    totalWon = b.amount + math.ceil((b.amount / self.kasino.amountA) * self.kasino.amountB)
+                    totalWon = b[1]+ math.ceil((b[1]/ session[7]) * session[8])
                 if postkarma + linkkarma == 0:
                     postToAll = 0.5
                 else:
                     postToAll = float(postkarma / (postkarma + linkkarma))
                 postAmount = round(float(totalWon * postToAll))
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'post', postAmount)
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'link', totalWon - postAmount)
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'post', postAmount)
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'link', totalWon - postAmount)
+                user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={b[0]}').fetchone()
                 output = discord.Embed(
                     title=f':tada: **You\'ve won {totalWon} karma!** :tada:',
                     color=discord.Colour.from_rgb(66, 186, 50),
-                    description=f'(Of which {b.amount} you put down on the table)\nNew karma balance => Total: {karmaSystem.users[str(b.userID)].post_karma+karmaSystem.users[str(b.userID)].link_karma} Post: {karmaSystem.users[str(b.userID)].post_karma} | Link: {karmaSystem.users[str(b.userID)].link_karma}'
+                    description=f'(Of which {b[1]} you put down on the table)\nNew karma balance => Total: {user[0]+user[1]} Post: {user[0]} | Link: {user[1]}'
                 )
-                await (await self.bot.fetch_user(b.userID)).send(embed=output)
-            for b in self.kasino.optionBBets.values():
+                await (await self.bot.fetch_user(b[0])).send(embed=output)
+            for b in b_bets:
+                user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={b[0]}').fetchone()
                 output = discord.Embed(
-                    title=f':chart_with_downwards_trend: **You\'ve unfortunately lost {b.amount} karma...** :chart_with_downwards_trend:',
+                    title=f':chart_with_downwards_trend: **You\'ve unfortunately lost {b[1]} karma...** :chart_with_downwards_trend:',
                     color=discord.Colour.from_rgb(209, 25, 25),
-                    description=f'New karma balance => Total: {karmaSystem.users[str(b.userID)].post_karma+karmaSystem.users[str(b.userID)].link_karma} Post: {karmaSystem.users[str(b.userID)].post_karma} | Link: {karmaSystem.users[str(b.userID)].link_karma}'
+                    description=f'New karma balance => Total: {user[0]+user[1]} Post: {user[0]} | Link: {user[1]}'
                 )
-                await (await self.bot.fetch_user(b.userID)).send(embed=output)
+                await (await self.bot.fetch_user(b[0])).send(embed=output)
             to_embed = discord.Embed(
-                title=f':tada: "{self.kasino.optionA}" was correct! :tada:',
-                description=f'Question: {self.kasino.question}\nIf you\'ve chosen 1, you\'ve just won karma!\nDistributed to the winners: **{self.kasino.amountA + self.kasino.amountB} Karma**',
+                title=f':tada: "{session[2]}" was correct! :tada:',
+                description=f'Question: {session[1]}\nIf you\'ve chosen 1, you\'ve just won karma!\nDistributed to the winners: **{session[7] + session[8]} Karma**',
                 color=discord.Colour.from_rgb(52, 79, 235)
             )
         # OPTION 2 WINS
         elif int(arg) == 2:
-            for b in self.kasino.optionBBets.values():
-                postkarma = karmaSystem.users[str(b.userID)].post_karma
-                linkkarma = karmaSystem.users[str(b.userID)].link_karma
-                if self.kasino.amountB == 0:
-                    totalWon = b.amount
+            for b in b_bets:
+                postkarma = cursor.execute(f'SELECT post_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
+                linkkarma = cursor.execute(f'SELECT link_karma FROM users WHERE user_id={b[0]}').fetchone()[0]
+                if session[8] == 0:
+                    totalWon = b[1]
                 else:
-                    totalWon = b.amount + math.ceil((b.amount / self.kasino.amountB) * self.kasino.amountA)
+                    totalWon = b[1] + math.ceil((b[1] / session[8]) * session[7])
                 if postkarma + linkkarma == 0:
                     postToAll = 0.5
                 else:
                     postToAll = float(postkarma / (postkarma + linkkarma))
                 postAmount = round(float(totalWon*postToAll))
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'post', postAmount)
-                karmaSystem.change_state_user(str(b.userID), 'upvote', 'link', totalWon-postAmount)
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'post', postAmount)
+                self.bot.get_cog('Karma').change_state_user(b[0], 'upvote', 'link', totalWon-postAmount)
+                user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={b[0]}').fetchone()
                 output = discord.Embed(
                     title=f':tada: **You\'ve won {totalWon} karma!** :tada:',
                     color=discord.Colour.from_rgb(66, 186, 50),
-                    description=f'(Of which {b.amount} you put down on the table)\nNew karma balance => Total: {karmaSystem.users[str(b.userID)].post_karma+karmaSystem.users[str(b.userID)].link_karma} Post: {karmaSystem.users[str(b.userID)].post_karma} | Link: {karmaSystem.users[str(b.userID)].link_karma}'
+                    description=f'(Of which {b[1]} you put down on the table)\nNew karma balance => Total: {user[0]+user[1]} Post: {user[0]} | Link: {user[1]}'
                 )
-                await (await self.bot.fetch_user(b.userID)).send(embed=output)
-            for b in self.kasino.optionABets.values():
+                await (await self.bot.fetch_user(b[0])).send(embed=output)
+            for b in a_bets:
+                user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={b[0]}').fetchone()
                 output = discord.Embed(
-                    title=f':chart_with_downwards_trend: **You\'ve unfortunately lost {b.amount} karma...** :chart_with_downwards_trend:',
+                    title=f':chart_with_downwards_trend: **You\'ve unfortunately lost {b[1]} karma...** :chart_with_downwards_trend:',
                     color=discord.Colour.from_rgb(209, 25, 25),
-                    description=f'New karma balance => Total: {karmaSystem.users[str(b.userID)].post_karma+karmaSystem.users[str(b.userID)].link_karma} Post: {karmaSystem.users[str(b.userID)].post_karma} | Link: {karmaSystem.users[str(b.userID)].link_karma}'
+                    description=f'New karma balance => Total: {user[0]+user[1]} Post: {user[0]} | Link: {user[1]}'
                 )
-                await (await self.bot.fetch_user(b.userID)).send(embed=output)
+                await (await self.bot.fetch_user(b[0])).send(embed=output)
             to_embed = discord.Embed(
-                title=f':tada: "{self.kasino.optionB}" was correct! :tada:',
-                description=f'Question: {self.kasino.question}\nIf you\'ve chosen 2, you\'ve just won karma!\nDistributed to the winners: **{self.kasino.amountA + self.kasino.amountB} Karma**',
+                title=f':tada: "{session[3]}" was correct! :tada:',
+                description=f'Question: {session[1]}\nIf you\'ve chosen 2, you\'ve just won karma!\nDistributed to the winners: **{session[7] + session[8]} Karma**',
                 color=discord.Colour.from_rgb(52, 79, 235)
             )
         to_embed.set_footer(
             text='as decided by ' + auth,
             icon_url=auth_img
         )
-        kmsg = await (await self.bot.fetch_channel(self.kasino.channelID)).fetch_message(self.kasino.messageID)
+        kmsg = await (await self.bot.fetch_channel(session[10])).fetch_message(session[11])
         await kmsg.delete()
         to_embed.set_thumbnail(url='https://cdn.betterttv.net/emote/602548a4d47a0b2db8d1a3b8/3x.gif')
         await ctx.send(embed=to_embed, delete_after=30)
-        os.remove(os.path.abspath('./data/kasino/session.json'))
-        self.kasino = None
-        karmaSystem.force_save()
+        cursor.execute("DELETE FROM kasino")
+        cursor.execute("DROP TABLE IF EXISTS a_bets")
+        cursor.execute("DROP TABLE IF EXISTS b_bets")
+        cursor.close()
+        karmadb.commit()
+        karmadb.close()
         return
 
     @commands.command(name='bet', aliases=['b'])
@@ -243,35 +307,74 @@ class Kasino(commands.Cog):
             return
 
         await ctx.message.delete()
+        karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
+        cursor = karmadb.cursor()
+        cursor.execute('SELECT * FROM kasino')
+        session = cursor.fetchone()
 
-        if self.kasino is None:
-            await ctx.author.send('There is currently no open kasino running. You\'ll have to wait till next time.')
+        if session is None:
+            output = discord.Embed(
+                title='There is currently no open kasino running. You\'ll have to wait till next time.',
+                color=discord.Colour.from_rgb(209, 25, 25)
+            )
+            await ctx.author.send(embed=output)
+            cursor.close()
+            karmadb.close()
             return
 
         if args is None:
-            await ctx.author.send('You didn\'t specify an amount. Write `§bet <amount> <1 or 2>` in chat')
+            output = discord.Embed(
+                title='You didn\'t specify an amount. Write `§bet <amount> <1 or 2>` in chat',
+                color=discord.Colour.from_rgb(209, 25, 25)
+            )
+            await ctx.author.send(embed=output)
+            cursor.close()
+            karmadb.close()
             return
 
         if len(args) == 1:
-            await ctx.author.send('You didn\'t specify an option. Write `§bet <amount> <1 or 2>` in chat')
+            output = discord.Embed(
+                title='You didn\'t specify an option. Write `§bet <amount> <1 or 2>` in chat',
+                color=discord.Colour.from_rgb(209, 25, 25)
+            )
+            await ctx.author.send(embed=output)
+            cursor.close()
+            karmadb.close()
             return
 
         if len(args) > 2:
-            await ctx.author.send('You passed an incorrect number of arguments. Write `§bet <amount> <1 or 2>` in chat')
+            output = discord.Embed(
+                title='You passed an incorrect number of arguments. Write `§bet <amount> <1 or 2>` in chat',
+                color=discord.Colour.from_rgb(209, 25, 25)
+            )
+            await ctx.author.send(embed=output)
+            cursor.close()
+            karmadb.close()
             return
 
-        if self.kasino.locked:
-            await ctx.author.send('Kasino is locked! Taking in no more bets.')
+        if session[12]:
+            output = discord.Embed(
+                title='Kasino is locked! Taking in no more bets.',
+                color=discord.Colour.from_rgb(209, 25, 25)
+            )
+            await ctx.author.send(embed=output)
+            cursor.close()
+            karmadb.close()
             return
+
+        cursor.execute(f'SELECT * FROM a_bets WHERE user_id={ctx.author.id}')
+        a_bets = cursor.fetchone()
+        cursor.execute(f'SELECT * FROM b_bets WHERE user_id={ctx.author.id}')
+        b_bets = cursor.fetchone()
 
         alreadyBet = 0
         alreadyBetAmount = 0
-        if str(ctx.author.id) in self.kasino.optionABets:
+        if a_bets is not None:
             alreadyBet = 1
-            alreadyBetAmount = self.kasino.optionABets[str(ctx.author.id)].amount
-        elif str(ctx.author.id) in self.kasino.optionBBets:
+            alreadyBetAmount = a_bets[2]
+        elif b_bets is not None:
             alreadyBet = 2
-            alreadyBetAmount = self.kasino.optionBBets[str(ctx.author.id)].amount
+            alreadyBetAmount = b_bets[2]
 
         amount = max(int(args[0]), 0)
         option = int(args[1])
@@ -282,13 +385,14 @@ class Kasino(commands.Cog):
                 color=discord.Colour.from_rgb(209, 25, 25)
             )
             await ctx.author.send(embed=output)
+            cursor.close()
+            karmadb.close()
             return
 
         if option == alreadyBet and amount > alreadyBetAmount:
             increase = amount - alreadyBetAmount
-            karmaSystem = self.bot.get_cog('Karma')
-            postkarma = karmaSystem.users[str(ctx.author.id)].post_karma
-            linkkarma = karmaSystem.users[str(ctx.author.id)].link_karma
+            postkarma = cursor.execute(f'SELECT post_karma FROM users WHERE user_id={ctx.author.id}').fetchone()[0]
+            linkkarma = cursor.execute(f'SELECT link_karma FROM users WHERE user_id={ctx.author.id}').fetchone()[0]
 
             postToAll = float(postkarma / (postkarma + linkkarma))
 
@@ -301,6 +405,8 @@ class Kasino(commands.Cog):
                     color=discord.Colour.from_rgb(209, 25, 25)
                 )
                 await ctx.author.send(embed=output)
+                cursor.close()
+                karmadb.close()
                 return
 
             if (postkarma - betpost)+(linkkarma - betlink) == 0:
@@ -314,17 +420,17 @@ class Kasino(commands.Cog):
                 await ctx.send(embed=madman, delete_after=20)
 
             if option == 1:
-                self.kasino.optionABets[str(ctx.author.id)] = KasinoSession.KasinoBet(ctx.author.id, alreadyBetAmount+betlink+betpost)
+                cursor.execute(f'UPDATE a_bets SET amount={alreadyBetAmount+betlink+betpost} WHERE user_id={ctx.author.id}')
                 output = discord.Embed(
-                    title=f'**Successfully increased bet on option {option} for {betpost + betlink} karma! Total bet is now: {betlink+betpost} Karma**',
+                    title=f'**Successfully increased bet on option {option} for {betpost + betlink} karma! Total bet is now: {alreadyBetAmount+betlink+betpost} Karma**',
                     color=discord.Colour.from_rgb(52, 79, 235),
                     description=f'Remaining karma => Total: {(postkarma - betpost)+(linkkarma - betlink)} Post: {postkarma - betpost} | Link: {linkkarma - betlink}'
                 )
                 await ctx.author.send(embed=output)
             elif option == 2:
-                self.kasino.optionBBets[str(ctx.author.id)] = KasinoSession.KasinoBet(ctx.author.id, alreadyBetAmount+betlink+betpost)
+                cursor.execute(f'UPDATE b_bets SET amount={alreadyBetAmount+betlink+betpost} WHERE user_id={ctx.author.id}')
                 output = discord.Embed(
-                    title=f'**Successfully increased bet on option {option} for {betpost + betlink} karma! Total bet is now: {betlink+betpost} Karma**',
+                    title=f'**Successfully increased bet on option {option} for {betpost + betlink} karma! Total bet is now: {alreadyBetAmount+betlink+betpost} Karma**',
                     color=discord.Colour.from_rgb(52, 79, 235),
                     description=f'Remaining karma => Total: {(postkarma - betpost)+(linkkarma - betlink)} Post: {postkarma - betpost} | Link: {linkkarma - betlink}'
                 )
@@ -335,6 +441,8 @@ class Kasino(commands.Cog):
                     color=discord.Colour.from_rgb(209, 25, 25)
                 )
                 await ctx.author.send(embed=output)
+                cursor.close()
+                karmadb.close()
                 return
         else:
             if alreadyBet != 0:
@@ -343,11 +451,12 @@ class Kasino(commands.Cog):
                     color=discord.Colour.from_rgb(209, 25, 25)
                 )
                 await ctx.author.send(embed=output)
+                cursor.close()
+                karmadb.close()
                 return
 
-            karmaSystem = self.bot.get_cog('Karma')
-            postkarma = karmaSystem.users[str(ctx.author.id)].post_karma
-            linkkarma = karmaSystem.users[str(ctx.author.id)].link_karma
+            postkarma = cursor.execute(f'SELECT post_karma FROM users WHERE user_id={ctx.author.id}').fetchone()[0]
+            linkkarma = cursor.execute(f'SELECT link_karma FROM users WHERE user_id={ctx.author.id}').fetchone()[0]
 
             postToAll = float(postkarma / (postkarma + linkkarma))
 
@@ -356,6 +465,8 @@ class Kasino(commands.Cog):
 
             if betlink+betpost == 0:
                 await ctx.author.send(f'Couldn\'t place a bet because you are broke! Try again after you earn some karma.')
+                cursor.close()
+                karmadb.close()
                 return
 
             if (postkarma - betpost) + (linkkarma - betlink) == 0:
@@ -368,8 +479,11 @@ class Kasino(commands.Cog):
                 madman.set_footer(text='Wish them luck!')
                 await ctx.send(embed=madman, delete_after=20)
 
+            cursor.execute(f'UPDATE kasino SET bets=bets+1')
+
             if option == 1:
-                self.kasino.optionABets[str(ctx.author.id)] = KasinoSession.KasinoBet(ctx.author.id, betlink+betpost)
+                cursor.execute(f'INSERT INTO a_bets (user_id, amount) VALUES({ctx.author.id},{betlink+betpost})')
+                cursor.execute(f'UPDATE kasino SET bets_a=bets_a+1')
                 output = discord.Embed(
                     title=f'**Successfully placed bet on option {option} for {betpost+betlink} karma!**',
                     color=discord.Colour.from_rgb(52, 79, 235),
@@ -377,7 +491,8 @@ class Kasino(commands.Cog):
                 )
                 await ctx.author.send(embed=output)
             elif option == 2:
-                self.kasino.optionBBets[str(ctx.author.id)] = KasinoSession.KasinoBet(ctx.author.id, betlink+betpost)
+                cursor.execute(f'INSERT INTO b_bets (user_id, amount) VALUES({ctx.author.id},{betlink+betpost})')
+                cursor.execute(f'UPDATE kasino SET bets_b=bets_b+1')
                 output = discord.Embed(
                     title=f'**Successfully placed bet on option {option} for {betpost + betlink} karma!**',
                     color=discord.Colour.from_rgb(52, 79, 235),
@@ -390,18 +505,21 @@ class Kasino(commands.Cog):
                     color=discord.Colour.from_rgb(209, 25, 25)
                 )
                 await ctx.author.send(embed=output)
+                cursor.close()
+                karmadb.close()
                 return
 
-        karmaSystem.change_state_user(str(ctx.author.id), 'downvote', 'post', betpost)
-        karmaSystem.change_state_user(str(ctx.author.id), 'downvote', 'link', betlink)
-
         if option == 1:
-            self.kasino.amountA += betpost+betlink
+            cursor.execute(f'UPDATE kasino SET amount_a=amount_a+{betpost+betlink}')
         elif option == 2:
-            self.kasino.amountB += betpost+betlink
-        self.kasino.bets += 1
+            cursor.execute(f'UPDATE kasino SET amount_b=amount_b+{betpost + betlink}')
+        cursor.close()
+        karmadb.commit()
+        karmadb.close()
 
-        self.save_session()
+        self.bot.get_cog('Karma').change_state_user(ctx.author.id, 'downvote', 'post', betpost)
+        self.bot.get_cog('Karma').change_state_user(ctx.author.id, 'downvote', 'link', betlink)
+
         await self.update_kasino()
         return
 
@@ -422,23 +540,16 @@ class Kasino(commands.Cog):
             await ctx.author.send(embed=output)
         return
 
-    def save_session(self):
-        with open(os.path.abspath('./data/kasino/session.json'), 'w') as outfile:
-            json.dump(self.kasino, outfile, cls=KasinoSession.KasinoEncoder, indent=4)
-        print(f'{self.ccolor.OKCYAN}SAVED KASINO SESSION{self.ccolor.ENDC}')
-
-    def load_session(self):
-        if os.path.isfile(os.path.abspath('./data/kasino/session.json')):
-            print(f'{self.ccolor.OKCYAN}LOADED KASINO SESSION{self.ccolor.ENDC}')
-            return json.load(open(os.path.abspath('./data/kasino/session.json')), cls=KasinoSession.KasinoDecoder)
-        else:
-            return None
-
     async def update_kasino(self):
-        kasinomsg = await (await self.bot.fetch_channel(self.kasino.channelID)).fetch_message(self.kasino.messageID)
+        karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
+        cursor = karmadb.cursor()
+        cursor.execute('SELECT * FROM kasino')
+        session = cursor.fetchone()
 
-        aAmount = self.kasino.amountA
-        bAmount = self.kasino.amountB
+        kasinomsg = await (await self.bot.fetch_channel(session[10])).fetch_message(session[11])
+
+        aAmount = session[7]
+        bAmount = session[8]
         if aAmount != 0:
             aOdds = float(aAmount+bAmount)/aAmount
         else:
@@ -449,23 +560,25 @@ class Kasino(commands.Cog):
             bOdds = 1.0
 
         to_embed = discord.Embed(
-            title=f'{"[LOCKED] " if self.kasino.locked else ""}:game_die: {self.kasino.question}',
+            title=f'{"[LOCKED] " if session[12] else ""}:game_die: {session[1]}',
             description=f'**On the table:** {aAmount+bAmount} Karma',
             color=discord.Colour.from_rgb(52, 79, 235)
         )
 
         footertext = ''
-        if self.kasino.locked:
+        if session[12]:
             footertext = 'The kasino is locked! No more bets are taken in. Time to wait and see...'
         else:
             footertext = 'The kasino has been opened! Place your bets using `§bet <amount> <1 or 2>`'
 
         to_embed.set_footer(text=footertext)
         to_embed.set_thumbnail(url='https://cdn.betterttv.net/emote/602548a4d47a0b2db8d1a3b8/3x.gif')
-        to_embed.add_field(name=f'**1:** {self.kasino.optionA}', value=f'**Odds:** 1:{round(aOdds,3)}\n**Pool:** {aAmount} Karma')
-        to_embed.add_field(name=f'**2:** {self.kasino.optionB}', value=f'**Odds:** 1:{round(bOdds,3)}\n**Pool:** {bAmount} Karma')
+        to_embed.add_field(name=f'**1:** {session[2]}', value=f'**Odds:** 1:{round(aOdds,2)}\n**Pool:** {aAmount} Karma')
+        to_embed.add_field(name=f'**2:** {session[3]}', value=f'**Odds:** 1:{round(bOdds,2)}\n**Pool:** {bAmount} Karma')
 
         await kasinomsg.edit(embed=to_embed)
+        cursor.close()
+        karmadb.close()
         return
 
 

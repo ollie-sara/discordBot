@@ -19,6 +19,8 @@ class Help(commands.Cog):
         if await self.bot.is_restricted(ctx):
             return
 
+        await ctx.message.delete()
+
         auth = ctx.message.author.display_name
         auth_img = ctx.message.author.avatar_url
         to_embed = discord.Embed(
@@ -90,7 +92,7 @@ class Help(commands.Cog):
             icon_url=auth_img
         )
 
-        await ctx.send(file=trans_logo, embed=to_embed)
+        await ctx.send(file=trans_logo, embed=to_embed, delete_after=15)
 
 
 def setup(bot):

@@ -22,6 +22,10 @@
     <category>
         <cname>Utility</cname>
         <command>
+            <name>§suggest</name>
+            <description>Used to give suggestions for new features/improvements to the bot developer</description>
+        </command>
+        <command>
             <name>§source</name>
             <description>Returns basic information about the bot.</description>
         </command>

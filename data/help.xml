@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <command>
+        <name>suggest</name>
+        <aliases>
+            <a>sug</a>
+            <a>sugg</a>
+        </aliases>
+        <usage>
+            `§suggest &lt;suggestion&gt;`
+        </usage>
+        <description>
+            Used to give the bot developer suggestions on possible features/updates.
+        </description>
+    </command>
+    <command>
         <name>lockkasino</name>
         <aliases>
             <a>lokas</a>
