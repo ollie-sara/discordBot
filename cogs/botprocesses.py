@@ -15,7 +15,8 @@ class BotProcesses(commands.Cog):
             'smallutils',
             'image',
             'karma',
-            'kasino'
+            'kasino',
+            'multimedia'
         ]
         bot.owner_ids = [
             '108305736131440640',   # OLLIE

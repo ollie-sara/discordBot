@@ -65,6 +65,7 @@ class Kasino(commands.Cog):
         karmadb.commit()
         karmadb.close()
         await self.update_kasino()
+        await ctx.send('||<@&819140349662068736>||')
         return
 
     @commands.command(name='refreshkasino', aliases=['rekas'])
@@ -291,7 +292,7 @@ class Kasino(commands.Cog):
         kmsg = await (await self.bot.fetch_channel(session[10])).fetch_message(session[11])
         await kmsg.delete()
         to_embed.set_thumbnail(url='https://cdn.betterttv.net/emote/602548a4d47a0b2db8d1a3b8/3x.gif')
-        await ctx.send(embed=to_embed, delete_after=30)
+        await ctx.send(embed=to_embed)
         cursor.execute("DELETE FROM kasino")
         cursor.execute("DROP TABLE IF EXISTS a_bets")
         cursor.execute("DROP TABLE IF EXISTS b_bets")

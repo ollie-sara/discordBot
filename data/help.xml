@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <command>
+        <name>3x3</name>
+        <aliases>
+            <a>collage</a>
+        </aliases>
+        <usage>
+            `§3x3 &lt;9 links&gt;`
+        </usage>
+        <description>Automatically crops and creates a 3x3 collage for you.</description>
+    </command>
+    <command>
+        <name>myfav</name>
+        <aliases>
+            <a>fav</a>
+        </aliases>
+        <usage>
+            `§myfav &lt;topic&gt; (&lt;option&gt;)`
+        </usage>
+        <description>Used to save collages of your favorite multimedia. Available topics are `games, books, movies, shows, anime, music, mix, pokemon`. Additional options are `list, remove`. To register your favorite games, you add `§myfav &lt;topic&gt;` as a comment to your collage. Use `§myfav &lt;topic&gt; @&lt;user&gt;` to see their collage. Use `§myfav &lt;topic&gt; remove` to remove your collage. Use `§myfav &lt;topic&gt; list` to list all users that have added collages to this topic. Use `§myfav @&lt;user&gt; list` to list all favorites a user has already added.</description>
+    </command>
+    <command>
         <name>suggest</name>
         <aliases>
             <a>sug</a>

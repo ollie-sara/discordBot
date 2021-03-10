@@ -7,9 +7,21 @@
             <name>§bet</name>
             <description>Bet on an option in a currently running karma kasino.</description>
         </command>
+        <command>
+            <name>§karma</name>
+            <description>Returns your or a given users post and link karma.</description>
+        </command>
     </category>
     <category>
         <cname>Media</cname>
+        <command>
+            <name>§myfav</name>
+            <description>Save your favorite games, movies, shows, anime, books, music, mix or pokemon as a collage, or check out other peoples collages.</description>
+        </command>
+        <command>
+            <name>§collage</name>
+            <description>Automatically crops 9 given links and creates a nice 3x3 collage for you.</description>
+        </command>
         <command>
             <name>§drumpf</name>
             <description>Prints a tweet with your text from the United States presidents' Twitter account.</description>
@@ -36,10 +48,6 @@
         <command>
             <name>§help</name>
             <description>Returns this list of commands.</description>
-        </command>
-        <command>
-            <name>§karma</name>
-            <description>Returns your or a given users post and link karma.</description>
         </command>
         <command>
             <name>§postlb</name>

@@ -23,22 +23,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6af189-0875-4a16-b518-d48bebf5e807" name="Default Changelist" comment="v1.1 -  Added karma kasino system (totally overengineered and the code is incredibly ugly) At least it works :)">
-      <change afterPath="$PROJECT_DIR$/cogs/karma.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cogs/multimedia.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/backup/karma.db" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/backup/kasino_karma.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/multimedia.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/karma.db" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/kasino/users_backup.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/migrate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/multimedia.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/collage_108305736131440640.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_8.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/botprocesses.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/botprocesses.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/help.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/help.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/karma.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/karma.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/image.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/image.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/kasino.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/kasino.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/smallutils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/smallutils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/categories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/categories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/help.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/help.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/posts/posts.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/posts/posts.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,7 +226,10 @@
       <workItem from="1615044565754" duration="1212000" />
       <workItem from="1615128359724" duration="5569000" />
       <workItem from="1615204935372" duration="26315000" />
-      <workItem from="1615285258040" duration="649000" />
+      <workItem from="1615285258040" duration="1342000" />
+      <workItem from="1615324219917" duration="13592000" />
+      <workItem from="1615364664911" duration="18888000" />
+      <workItem from="1615402969047" duration="880000" />
     </task>
     <task id="LOCAL-00001" summary="first commit, basic setup">
       <created>1604764057610</created>
@@ -332,7 +343,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614965322124</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="v1.2 - Migrated all my json files into one large sqlite3 db.">
+      <created>1615287440486</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1615287440486</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -363,10 +381,11 @@
     <MESSAGE value="moved everything into botprocesses.py so that there is no reason to restart using command line. I can now use §restart in discord to reload all processes. Also fixed some things in §karma, saving is now fixed to a 10 min delay" />
     <MESSAGE value="v1.0 - Added §meme and changed karma system to on_raw_reactions so that internal cache doesn't matter. Also added §checkpost to update the karma of posts that the bot may have missed." />
     <MESSAGE value="v1.1 -  Added karma kasino system (totally overengineered and the code is incredibly ugly) At least it works :)" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.1 -  Added karma kasino system (totally overengineered and the code is incredibly ugly) At least it works :)" />
+    <MESSAGE value="v1.2 - Migrated all my json files into one large sqlite3 db." />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.2 - Migrated all my json files into one large sqlite3 db." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1615248507327" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1615392787418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/discordBot$migrate_users.coverage" NAME="migrate Coverage Results" MODIFIED="1615245415545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
   </component>
 </project>
