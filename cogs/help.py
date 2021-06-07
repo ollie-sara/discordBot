@@ -97,7 +97,7 @@ class Help(commands.Cog):
             icon_url=auth_img
         )
 
-        await ctx.send(file=trans_logo, embed=to_embed, delete_after=30)
+        await ctx.send(file=trans_logo, embed=to_embed, delete_after=45)
 
 
 def setup(bot):

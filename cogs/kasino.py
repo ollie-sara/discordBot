@@ -20,8 +20,10 @@ class Kasino(commands.Cog):
         if await self.bot.is_restricted(ctx):
             return
 
-        await self.__check_openkasino_args(ctx, question, op_a, op_b)
         await ctx.message.delete()
+
+        if not await self.__check_openkasino_args(ctx, question, op_a, op_b):
+            return
         kasino = await self.__add_kasino(ctx, question=question, option_1=op_a, option_2=op_b)
         self.__create_kasino_backup(kasino)
         await self.__update_kasino(kasino)
@@ -143,6 +145,8 @@ class Kasino(commands.Cog):
 
         await ctx.message.delete()
 
+        self.__init_user(ctx.author.id)
+
         try:
             if amount == 'all':
                 amount = self.__get_balance(ctx.author.id)
@@ -237,6 +241,14 @@ class Kasino(commands.Cog):
         return
 
     # HELPER FUNCTIONS
+    def __init_user(self, user_id):
+        db = sqlite3.connect(os.path.abspath('./data/karma.db'))
+        cursor = db.cursor()
+        cursor.execute(f'SELECT * FROM users WHERE user_id={user_id}')
+        user = cursor.fetchone()
+        if user is None:
+            self.bot.get_cog('Karma').add_user(user_id)
+
     def __is_same_option(self, user_id, kasino_id, option):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
@@ -611,9 +623,18 @@ class Kasino(commands.Cog):
 
     async def __check_openkasino_args(self, ctx, question, op_a, op_b):
         if len(op_a) > 227 or len(op_b) > 227:
-            await ctx.author.send('One of the two options exceeds the maximum allowed 227 characters')
+            await ctx.author.send(f'One of the two options exceeds the maximum allowed 227 characters\n'
+                                  f'Option 1: {op_a}\n'
+                                  f'Length: {len(op_a)}\n'
+                                  f'Option 2: {op_b}\n'
+                                  f'Length: {len(op_b)}')
+            return False
         if len(question) > 236:
-            await ctx.author.send('Question exceeds the maximum allowed 236 characters')
+            await ctx.author.send(f'Question exceeds the maximum allowed 236 characters\n'
+                                  f'Question was: {question}\n'
+                                  f'Length: {len(question)}')
+            return False
+        return True
 
     def __create_kasino_backup(self, id):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
