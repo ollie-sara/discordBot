@@ -44,20 +44,20 @@ class Multimedia(commands.Cog):
             return
 
         if topic is None:
-            await ctx.author.send('So you\'ve tried using `§myfav`, but might not be familiar with it yet. Here a quick explanation:\n'
-                                  '`§myfav` is a command used to save and browse all sorts of other people\'s favorites. Currently following'
+            await ctx.author.send('So you\'ve tried using `-myfav`, but might not be familiar with it yet. Here a quick explanation:\n'
+                                  '`-myfav` is a command used to save and browse all sorts of other people\'s favorites. Currently following'
                                   ' topics are supported: `games|books|movies|shows|anime|music|mix|pokemon`\n\n'
                                   'To save a collage (commonly 3x3), complete the steps below:\n'
                                   '1. Create a collage in your favorite software/online tool and save it\n'
                                   '2. Drag it into the #spam channel\n'
-                                  '3. Under "Comment" write `§myfav <topic>`. Replace `<topic>` with one of the above.\n'
+                                  '3. Under "Comment" write `-myfav <topic>`. Replace `<topic>` with one of the above.\n'
                                   '4. Send the image. Your collage should now be registered.\n\n'
-                                  'To browse other people\'s favorites, write `§myfav <topic> @user`\n'
-                                  'To show people your favorites, write `§myfav <topic>`\n'
-                                  'To delete your favorite, write `§myfav <topic> remove`\n'
-                                  'To list who added their favorites to a topic, write `§myfav <topic> list`\n'
-                                  'To list what favorites a user has added, write `§myfav @user list`\n'
-                                  'This concludes all the information you may need to use `§myfav`. Thank you for reading, and have fun!')
+                                  'To browse other people\'s favorites, write `-myfav <topic> @user`\n'
+                                  'To show people your favorites, write `-myfav <topic>`\n'
+                                  'To delete your favorite, write `-myfav <topic> remove`\n'
+                                  'To list who added their favorites to a topic, write `-myfav <topic> list`\n'
+                                  'To list what favorites a user has added, write `-myfav @user list`\n'
+                                  'This concludes all the information you may need to use `-myfav`. Thank you for reading, and have fun!')
             await ctx.send('Sent you a message in DMs!',
                            delete_after=30)
             await ctx.message.delete()
@@ -70,13 +70,19 @@ class Multimedia(commands.Cog):
             user = None
 
         if topic not in ['games', 'books', 'movies', 'shows', 'anime', 'music', 'mix', 'pokemon']:
-            if user is None:
+            if user is not None:
+                if option == 'list':
+                    await self.list_fav_user(ctx, user)
+                    return
+                else:
+                    await ctx.send('The topic you passed doesn\'t seem to be completely correct. Make sure you write '
+                                   '`-myfav <games|books|movies|shows|anime|music|mix|pokemon>`.', delete_after=30)
+                    await ctx.message.delete()
+                    return
+            elif user is None:
                 await ctx.send('The topic you passed doesn\'t seem to be completely correct. Make sure you write '
-                               '`§myfav <games|books|movies|shows|anime|music|mix|pokemon>`.', delete_after=30)
+                               '`-myfav <games|books|movies|shows|anime|music|mix|pokemon>`.', delete_after=30)
                 await ctx.message.delete()
-                return
-            elif option == 'list':
-                await self.list_fav_user(ctx, user)
                 return
 
         if option is None:
@@ -88,7 +94,7 @@ class Multimedia(commands.Cog):
             if entry is None:
                 if ctx.message.attachments is None:
                     await ctx.send('There doesn\'t seem to be an image provided. Make sure you write '
-                                   '`§myfav <games|books|movies|shows|anime|music|mix|pokemon>` _as a comment_ in the dialog where you send the image.',
+                                   '`-myfav <games|books|movies|shows|anime|music|mix|pokemon>` _as a comment_ in the dialog where you send the image.',
                                    delete_after=30)
                     await ctx.message.delete()
                     return
@@ -110,7 +116,7 @@ class Multimedia(commands.Cog):
                 await self.add_fav(ctx, topic, option)
             else:
                 await ctx.send('There doesn\'t seem to be an image provided. Make sure you write '
-                               '`§myfav <games|books|movies|shows|anime|music|mix|pokemon>` _as a comment_ in the dialog where you send the image.',
+                               '`-myfav <games|books|movies|shows|anime|music|mix|pokemon>` _as a comment_ in the dialog where you send the image.',
                                delete_after=30)
                 await ctx.message.delete()
                 return
@@ -250,7 +256,7 @@ class Multimedia(commands.Cog):
         else:
             if len(ctx.message.attachments) == 0:
                 await ctx.send(f'You did not send an image. '
-                               f'Please, try again using `§myfav {topic}` _as a comment_ on your collage image.', delete_after=30)
+                               f'Please, try again using `-myfav {topic}` _as a comment_ on your collage image.', delete_after=30)
                 return
             try:
                 image_url = ctx.message.attachments[0].url
