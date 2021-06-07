@@ -16,7 +16,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 # NECESSARY BOT STUFF
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True)
-bot = commands.Bot(command_prefix='§', description="ANTICOMPSCI", intents=intents)
+bot = commands.Bot(command_prefix='-', description="ANTICOMPSCI", intents=intents)
 bot.remove_command('help')
 
 
@@ -74,6 +74,15 @@ async def is_restricted(ctx):
     else:
         return False
 bot.is_restricted = is_restricted
+
+
+async def is_admin(ctx):
+    if await bot.get_cog('BotProcesses').is_admin(ctx):
+        return True
+    else:
+        return False
+bot.is_admin = is_admin
+
 
 try:
     bot.load_extension('cogs.botprocesses')

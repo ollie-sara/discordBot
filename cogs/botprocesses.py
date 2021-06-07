@@ -16,7 +16,8 @@ class BotProcesses(commands.Cog):
             'image',
             'karma',
             'kasino',
-            'multimedia'
+            'multimedia',
+            'economy'
         ]
         bot.owner_ids = [
             '108305736131440640',   # OLLIE
@@ -49,6 +50,12 @@ class BotProcesses(commands.Cog):
             return True
         return False
 
+    async def is_admin(self, ctx):
+        bot = self.bot
+        if str(ctx.message.author.id) in bot.owner_ids:
+            return True
+        return False
+
     @commands.command(name='reload')
     async def reload(self, ctx):
         bot = self.bot
@@ -75,7 +82,7 @@ class BotProcesses(commands.Cog):
                 print(f'{self.ccolor.FAIL}BACKGROUND LOOP ERROR:{self.ccolor.ENDC} COULD NOT START BACKGROUND LOOP | ' + str(e))
                 return
             print(f'{self.ccolor.OKBLUE}BACKGROUND LOOP:{self.ccolor.ENDC} FINISHED LOOP SUCCESSFULLY')
-            await asyncio.sleep(600)
+            await asyncio.sleep(1200)
 
     async def on_raw_reaction_add(self, payload):
         bot = self.bot

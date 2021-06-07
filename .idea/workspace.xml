@@ -23,12 +23,101 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6af189-0875-4a16-b518-d48bebf5e807" name="Default Changelist" comment="v1.1 -  Added karma kasino system (totally overengineered and the code is incredibly ugly) At least it works :)">
-      <change afterPath="$PROJECT_DIR$/cogs/multimedia.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cogs/economy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cogs/kasino_old.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/backup/karma.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-08.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-13.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-18.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-24.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-29.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-34.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-39.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-44.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-49.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-11-17-30-55.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-19-16_42_11.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-19-17_31_22.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-19-17_32_49.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-19-17_35_11.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-19-17_55_11.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-19-18_15_11.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-03-19-18_35_11.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-04-01-17_29_43.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-06-17_52_04.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-06-18_12_04.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-06-18_32_04.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-01_31_30.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-01_36_00.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-01_37_12.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-01_39_49.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-01_41_45.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-01_44_05.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_12_13.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_14_15.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_14_38.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_16_13.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_16_33.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_31_36.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_32_28.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_32_52.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-02_35_31.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_15_21.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_16_04.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_36_04.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_46_58.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_53_37.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_54_50.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_56_45.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_57_39.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_58_18.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-03_58_51.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_00_55.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_02_40.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_04_28.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_08_13.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_11_02.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_17_15.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_19_46.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_20_47.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_21_24.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_22_04.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_23_31.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_23_52.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_32_54.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_37_28.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-04_38_37.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-11_27_29.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-11_47_30.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_03_21.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_11_13.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_12_47.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_14_03.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_14_31.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_21_51.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_22_57.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_24_02.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_24_25.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_24_49.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_25_32.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_45_32.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_53_56.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-12_55_31.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_12_20.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_12_49.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_15_20.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_16_24.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_16_50.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_17_28.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_25_11.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_27_02.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/karma_2021-06-07-13_42_51.db" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/backup/kasino_karma.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/backup/multimedia.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/kasino_karma_1.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/backup/kasino_karma_2.db" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/karma.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/kasino/users_backup.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/kasino/karma.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/kasino/kasino_karma.db" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/multimedia.db" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/temp/collage_108305736131440640.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_0.jpg" afterDir="false" />
@@ -40,10 +129,16 @@
       <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_6.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_7.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/temp/test_108305736131440640_8.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/botprocesses.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/botprocesses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/help.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/help.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/image.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/karma.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/karma.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/kasino.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/kasino.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/multimedia.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/multimedia.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/reddit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/reddit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/smallutils.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/smallutils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/categories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/categories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/help.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/help.xml" afterDir="false" />
@@ -99,7 +194,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/isr_gui" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -229,7 +324,25 @@
       <workItem from="1615285258040" duration="1342000" />
       <workItem from="1615324219917" duration="13592000" />
       <workItem from="1615364664911" duration="18888000" />
-      <workItem from="1615402969047" duration="880000" />
+      <workItem from="1615402969047" duration="1642000" />
+      <workItem from="1615405875118" duration="1076000" />
+      <workItem from="1615475210933" duration="3310000" />
+      <workItem from="1615850743085" duration="518000" />
+      <workItem from="1616168173829" duration="1093000" />
+      <workItem from="1616171266182" duration="1869000" />
+      <workItem from="1617290976382" duration="203000" />
+      <workItem from="1617652622088" duration="614000" />
+      <workItem from="1618605807962" duration="303000" />
+      <workItem from="1618607900100" duration="215000" />
+      <workItem from="1619266677346" duration="1323000" />
+      <workItem from="1619520298056" duration="98000" />
+      <workItem from="1620228455076" duration="664000" />
+      <workItem from="1621009537352" duration="39000" />
+      <workItem from="1621010512320" duration="23000" />
+      <workItem from="1622926311539" duration="2473000" />
+      <workItem from="1622992260978" duration="2334000" />
+      <workItem from="1623009632123" duration="23263000" />
+      <workItem from="1623058037337" duration="8103000" />
     </task>
     <task id="LOCAL-00001" summary="first commit, basic setup">
       <created>1604764057610</created>
@@ -350,7 +463,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615287440486</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="v1.2 - Added §fav and §3x3, to save 3x3 collages and to create them">
+      <created>1615404009194</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1615404009194</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -382,10 +502,11 @@
     <MESSAGE value="v1.0 - Added §meme and changed karma system to on_raw_reactions so that internal cache doesn't matter. Also added §checkpost to update the karma of posts that the bot may have missed." />
     <MESSAGE value="v1.1 -  Added karma kasino system (totally overengineered and the code is incredibly ugly) At least it works :)" />
     <MESSAGE value="v1.2 - Migrated all my json files into one large sqlite3 db." />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.2 - Migrated all my json files into one large sqlite3 db." />
+    <MESSAGE value="v1.2 - Added §fav and §3x3, to save 3x3 collages and to create them" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.2 - Added §fav and §3x3, to save 3x3 collages and to create them" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1615392787418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/discordBot$migrate_users.coverage" NAME="migrate Coverage Results" MODIFIED="1615245415545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
+    <SUITE FILE_PATH="coverage/discordBot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1623066168217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

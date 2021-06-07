@@ -50,11 +50,11 @@ class Help(commands.Cog):
                     desc = c.find('description').text
                     for a in c.find('aliases').findall('a'):
                         if a.text != 'none':
-                            aliases += '`§'+a.text+'` '
+                            aliases += '`-'+a.text+'` '
                         else:
                             aliases += 'none'
 
-            to_embed.title = '§' + title
+            to_embed.title = '-' + title
             to_embed.add_field(
                 name='Aliases',
                 value=aliases,
@@ -72,18 +72,23 @@ class Help(commands.Cog):
             )
         else:
             for cat in self.commandList.findall('category'):
+                title = cat.find('cname').text
+
+                if title == 'Admin' and not await self.bot.is_admin(ctx):
+                    continue
+
                 lines = ''
                 for com in cat.findall('command'):
                     lines += '`'+com.find('name').text+'` => '+com.find('description').text+'\n'
                 to_embed.add_field(
-                    name=cat.find('cname').text,
+                    name=title,
                     value=lines,
                     inline=False
                 )
 
             to_embed.add_field(
                 name='_',
-                value='To get specific instruction of a command, use `§help <command>` (without §)',
+                value='To get specific instruction of a command, use `-help <command>` (command without -)',
                 inline=False
             )
 
@@ -92,7 +97,7 @@ class Help(commands.Cog):
             icon_url=auth_img
         )
 
-        await ctx.send(file=trans_logo, embed=to_embed, delete_after=15)
+        await ctx.send(file=trans_logo, embed=to_embed, delete_after=30)
 
 
 def setup(bot):

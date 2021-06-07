@@ -7,7 +7,7 @@ import os
 class SmallUtils(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.VERSION = '**v1.2**'
+        self.VERSION = '**v1.3**'
 
     @commands.command(name='source', aliases=['s', 'info'])
     async def source(self, ctx):
@@ -34,7 +34,7 @@ class SmallUtils(commands.Cog):
         if await self.bot.is_restricted(ctx):
             return
 
-        command = str(ctx.message.content).replace('§', '')
+        command = str(ctx.message.content).replace('-', '')
         command = 'pong' if command == 'ping' else 'ping'
         try:
             latency = str(round(self.bot.latency*1000)) + " ms"
@@ -67,7 +67,7 @@ class SmallUtils(commands.Cog):
         await ctx.message.delete()
 
         if not arg:
-            await ctx.send('Incorrect use of the command. Refer to `§help suggest` for further instructions.', delete_after=10)
+            await ctx.send('Incorrect use of the command. Refer to `-help suggest` for further instructions.', delete_after=10)
             return
 
         suggestion = str(arg)

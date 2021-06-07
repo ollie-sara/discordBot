@@ -1,3 +1,4 @@
+import datetime
 import os
 import sqlite3
 import discord
@@ -10,6 +11,8 @@ class Karma(commands.Cog):
         self.bot = bot
         self.ccolor = bColors.bColors()
         self.saveIterations = 0
+        self.backups = []
+        self.maxbackups = 20
 
     async def saving_routine(self):
         self.backup_karma()
@@ -192,9 +195,12 @@ class Karma(commands.Cog):
         karmadb.close()
         await ctx.send(embed=to_embed)
 
-    def change_state_user(self, user_id, change, karma_type, amount):
-        karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
-        cursor = karmadb.cursor()
+    def change_state_user(self, user_id, change, karma_type, amount, dbcursor=None):
+        if dbcursor is None:
+            karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
+            cursor = karmadb.cursor()
+        else:
+            cursor = dbcursor
         cursor.execute(f'SELECT * FROM users WHERE user_id={int(user_id)}')
         user = cursor.fetchone()
         if user is None:
@@ -204,14 +210,13 @@ class Karma(commands.Cog):
             user = cursor.fetchone()
         if change == 'upvote':
             cursor.execute(f'UPDATE users SET {karma_type}_karma = {karma_type}_karma+{amount} WHERE user_id={int(user_id)}');
-            cursor.close()
-            karmadb.commit()
         elif change == 'downvote':
-            cursor.execute(f'UPDATE users SET {karma_type}_karma = {karma_type}_karma-{amount} WHERE user_id={int(user_id)}');
+            cursor.execute(f'UPDATE users SET {karma_type}_karma = {karma_type}_karma-{amount} WHERE user_id={int(user_id)} AND {karma_type}_karma != 0');
+            cursor.execute(f'UPDATE users SET {karma_type}_karma = 0 WHERE {karma_type}_karma < 0');
+        if dbcursor is None:
             cursor.close()
             karmadb.commit()
-        cursor.close()
-        karmadb.close()
+            karmadb.close()
 
     def change_state_post(self, message, value, increase):
         karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
@@ -232,6 +237,7 @@ class Karma(commands.Cog):
             else:
                 cursor.execute(f'UPDATE posts SET downvotes=downvotes-1 WHERE message_id={message.id}')
         cursor.close()
+        karmadb.commit()
         karmadb.close()
 
     def set_state_post(self, message, upvotes, downvotes):
@@ -244,6 +250,7 @@ class Karma(commands.Cog):
             self.add_post(message)
         cursor.execute(f'UPDATE posts SET upvotes={upvotes}, downvotes={downvotes} WHERE message_url="{message.jump_url}"')
         cursor.close()
+        karmadb.commit()
         karmadb.close()
         return
 
@@ -270,12 +277,19 @@ class Karma(commands.Cog):
         cursor.execute(f'INSERT INTO posts (message_url, message_id, content, author, created_at)'
                        f'VALUES("{message.jump_url}", {message.id}, "{contentfix}", "{authorfix}", "{message.created_at.strftime("%Y-%m-%d %H:%M:%S")}")')
         cursor.close()
+        karmadb.commit()
         karmadb.close()
         return
 
     def backup_karma(self):
         karmadb = sqlite3.connect(os.path.abspath('./data/karma.db'))
-        backupdb = sqlite3.connect(os.path.abspath('./data/backup/karma.db'))
+        time = datetime.datetime.now().strftime("%Y-%m-%d-%H_%M_%S")
+        backupdb = sqlite3.connect(os.path.abspath(f'./data/backup/karma_{time}.db'))
+        if len(self.backups) > self.maxbackups-1:
+            while len(self.backups) > self.maxbackups-1:
+                to_delete = self.backups.pop(0)
+                os.remove(os.path.abspath(f'./data/backup/karma_{to_delete}.db'))
+        self.backups.append(time)
         karmadb.backup(backupdb)
         karmadb.close()
         backupdb.commit()

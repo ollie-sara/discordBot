@@ -5,3 +5,6 @@
 /.idea
 /data/Segoe UI.ttf
 /data/drumpf_template.jpg
+/data/backup
+/data/temp
+*.db

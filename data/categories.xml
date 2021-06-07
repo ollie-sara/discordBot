@@ -2,86 +2,90 @@
 
 <root>
     <category>
-        <cname>Karma Kasino</cname>
+        <cname>Karma Economy</cname>
         <command>
-            <name>§bet</name>
+            <name>-bet</name>
             <description>Bet on an option in a currently running karma kasino.</description>
         </command>
         <command>
-            <name>§karma</name>
+            <name>-karma</name>
             <description>Returns your or a given users post and link karma.</description>
+        </command>
+        <command>
+            <name>-wiretransfer</name>
+            <description>Used to send karma to a user.</description>
         </command>
     </category>
     <category>
         <cname>Media</cname>
         <command>
-            <name>§myfav</name>
+            <name>-myfav</name>
             <description>Save your favorite games, movies, shows, anime, books, music, mix or pokemon as a collage, or check out other peoples collages.</description>
         </command>
         <command>
-            <name>§collage</name>
+            <name>-collage</name>
             <description>Automatically crops 9 given links and creates a nice 3x3 collage for you.</description>
         </command>
         <command>
-            <name>§drumpf</name>
+            <name>-drumpf</name>
             <description>Prints a tweet with your text from the United States presidents' Twitter account.</description>
         </command>
         <command>
-            <name>§meme</name>
+            <name>-meme</name>
             <description>With a given image url and top and bottom string, returns an impact font meme.</description>
         </command>
     </category>
     <category>
         <cname>Utility</cname>
         <command>
-            <name>§suggest</name>
+            <name>-suggest</name>
             <description>Used to give suggestions for new features/improvements to the bot developer</description>
         </command>
         <command>
-            <name>§source</name>
+            <name>-source</name>
             <description>Returns basic information about the bot.</description>
         </command>
         <command>
-            <name>§ping</name>
+            <name>-ping</name>
             <description>Returns the current latency of the bot.</description>
         </command>
         <command>
-            <name>§help</name>
+            <name>-help</name>
             <description>Returns this list of commands.</description>
         </command>
         <command>
-            <name>§postlb</name>
+            <name>-postlb</name>
             <description>Returns the top voted messages of all time and this week.</description>
         </command>
     </category>
     <category>
         <cname>Admin</cname>
         <command>
-            <name>§reload</name>
+            <name>-reload</name>
             <description>Reloads all cogs.</description>
         </command>
         <command>
-            <name>§restart</name>
+            <name>-restart</name>
             <description>Restarts vital bot processes.</description>
         </command>
         <command>
-            <name>§checkpost</name>
+            <name>-checkpost</name>
             <description>Checks a given message_id in a given channel_id. Updates top post archive.</description>
         </command>
         <command>
-            <name>§openkasino</name>
+            <name>-openkasino</name>
             <description>Opens a new instance of the karma kasino (Only one at a time).</description>
         </command>
         <command>
-            <name>§lockkasino</name>
+            <name>-lockkasino</name>
             <description>Locks current karma kasino so that no new bets can be made.</description>
         </command>
         <command>
-            <name>§closekasino</name>
+            <name>-closekasino</name>
             <description>Closes the running instance of the karma kasino.</description>
         </command>
         <command>
-            <name>§refreshkasino</name>
+            <name>-refreshkasino</name>
             <description>Replaces old karma kasino message with a new message.</description>
         </command>
     </category>

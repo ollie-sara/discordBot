@@ -81,9 +81,9 @@ class Reddit(commands.Cog):
         if await self.bot.is_restricted(ctx):
             return
 
-        command = str(ctx.message.content).replace('§', '')
+        command = str(ctx.message.content).replace('-', '')
         if not args and command in ctx.message.content and command != 'okbr':
-            await ctx.send('Incorrect use of the command. Refer to `§help reddit` for further instructions.')
+            await ctx.send('Incorrect use of the command. Refer to `-help reddit` for further instructions.')
             return
 
         auth = ctx.message.author.display_name

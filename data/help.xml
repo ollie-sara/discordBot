@@ -6,7 +6,7 @@
             <a>collage</a>
         </aliases>
         <usage>
-            `§3x3 &lt;9 links&gt;`
+            `-3x3 &lt;9 links&gt;`
         </usage>
         <description>Automatically crops and creates a 3x3 collage for you.</description>
     </command>
@@ -16,9 +16,9 @@
             <a>fav</a>
         </aliases>
         <usage>
-            `§myfav &lt;topic&gt; (&lt;option&gt;)`
+            `-myfav &lt;topic&gt; (&lt;option&gt;)`
         </usage>
-        <description>Used to save collages of your favorite multimedia. Available topics are `games, books, movies, shows, anime, music, mix, pokemon`. Additional options are `list, remove`. To register your favorite games, you add `§myfav &lt;topic&gt;` as a comment to your collage. Use `§myfav &lt;topic&gt; @&lt;user&gt;` to see their collage. Use `§myfav &lt;topic&gt; remove` to remove your collage. Use `§myfav &lt;topic&gt; list` to list all users that have added collages to this topic. Use `§myfav @&lt;user&gt; list` to list all favorites a user has already added.</description>
+        <description>Used to save collages of your favorite multimedia. Available topics are `games, books, movies, shows, anime, music, mix, pokemon`. Additional options are `list, remove`. To register your favorite games, you add `-myfav &lt;topic&gt;` as a comment to your collage. Use `-myfav &lt;topic&gt; @&lt;user&gt;` to see their collage. Use `-myfav &lt;topic&gt; remove` to remove your collage. Use `-myfav &lt;topic&gt; list` to list all users that have added collages to this topic. Use `-myfav @&lt;user&gt; list` to list all favorites a user has already added.</description>
     </command>
     <command>
         <name>suggest</name>
@@ -27,7 +27,7 @@
             <a>sugg</a>
         </aliases>
         <usage>
-            `§suggest &lt;suggestion&gt;`
+            `-suggest &lt;suggestion&gt;`
         </usage>
         <description>
             Used to give the bot developer suggestions on possible features/updates.
@@ -39,7 +39,7 @@
             <a>lokas</a>
         </aliases>
         <usage>
-            `§lockkasino`
+            `-lockkasino &lt;kasino id&gt;`
         </usage>
         <description>
             Admin-only. Locks the current karma kasino, so that no new bets can be made.
@@ -51,7 +51,7 @@
             <a>okas</a>
         </aliases>
         <usage>
-            `§openkasino &lt;question&gt; &lt;option 1 text&gt; &lt;option 2 text&gt;`
+            `-openkasino &lt;question&gt; &lt;option 1 text&gt; &lt;option 2 text&gt;`
         </usage>
         <description>
             Admin-only. Creates new karma kasino for people to bet in. Doesn't work if there is an instance of a casino already open somewhere.
@@ -63,7 +63,7 @@
             <a>clokas</a>
         </aliases>
         <usage>
-            `§closekasino &lt;1, 2 or 3&gt;`
+            `-closekasino &lt;kasino id&gt; &lt;1, 2 or 3 (abort)&gt;`
         </usage>
         <description>
             Admin-only. Closes last instance of the karma kasino. Pass 1 for option 1 to win, pass 2 for option 2 to win and pass 3 to cancel and refund.
@@ -75,7 +75,7 @@
             <a>rekas</a>
         </aliases>
         <usage>
-            `§refreshkasino`
+            `-refreshkasino &lt;kasino id&gt;`
         </usage>
         <description>
             Admin-only. Used to renew karma kasino to a new message, so that people see it again. Doing this manually avoids clutter and spam.
@@ -85,10 +85,10 @@
         <name>bet</name>
         <aliases><a>b</a></aliases>
         <usage>
-            `§bet &lt;karma amount&gt; &lt;1 or 2&gt;`
+            `-bet &lt;kasino id&gt; &lt;karma amount&gt; &lt;1 or 2&gt;`
         </usage>
         <description>
-            Bets the specified amount of karma in the current karma kasino on the specified option. If your option wins, you receive your karma back, including a proportional amount of karma bet on the opposite option. Gamba! :game_die:
+            Bets the specified amount of karma in the current karma kasino on the specified option. If your option wins, you receive your karma back, including a proportional amount of karma bet on the opposite option. You may use 'all' instead of a number to bet all your karma. Gamba! :game_die:
         </description>
     </command>
     <command>
@@ -98,7 +98,7 @@
             <a>halp</a>
         </aliases>
         <usage>
-            `§help (&lt;command&gt;)`
+            `-help (&lt;command&gt;)`
         </usage>
         <description>
             Returns list of commands or specific instructions on the command specified by `&lt;command&gt;`
@@ -111,7 +111,7 @@
             <a>pong</a>
         </aliases>
         <usage>
-            `§ping`
+            `-ping`
         </usage>
         <description>
             Returns the latency of the bot.
@@ -124,7 +124,7 @@
             <a>info</a>
         </aliases>
         <usage>
-            `§source`
+            `-source`
         </usage>
         <description>
             Returns basic information about the bot.
@@ -136,7 +136,7 @@
             <a>e</a>
         </aliases>
         <usage>
-            `§echo &lt;message&gt;`
+            `-echo &lt;message&gt;`
         </usage>
         <description>
             For debug purposes. Returns exactly the message you pass through.
@@ -148,7 +148,7 @@
             <a>dr</a>
         </aliases>
         <usage>
-            `§drumpf &lt;text&gt;`
+            `-drumpf &lt;text&gt;`
         </usage>
         <description>
             Returns a tweet from the President of the United States with whatever you passed through `&lt;text&gt;`
@@ -160,12 +160,12 @@
             <a>k</a>
         </aliases>
         <usage>
-            `§karma (&lt;user&gt;)`
+            `-karma (&lt;user&gt;)`
         </usage>
         <description>
             Returns the amount of post and link karma of yourself, or, if passed in `&lt;user&gt;`, the karma of the specified user.
             Every time you get a :this: or :that: reaction on one of your messages on this server, you gain karma. If you posted purely text, you receive post karma and otherwise link karma.
-            Use `§karma lb` to print karma leaderboards of the server.
+            Use `-karma lb` to print karma leaderboards of the server.
         </description>
     </command>
     <command>
@@ -174,7 +174,7 @@
             <a>plb</a>
         </aliases>
         <usage>
-            `§postlb`
+            `-postlb`
         </usage>
         <description>
             Returns the top voted messages of all time and this week.
@@ -186,7 +186,7 @@
             <a>me</a>
         </aliases>
         <usage>
-            `§meme &lt;url&gt; "&lt;top text&gt;" "&lt;bottom text&gt;"`
+            `-meme &lt;url&gt; "&lt;top text&gt;" "&lt;bottom text&gt;"`
         </usage>
         <description>
             Given an image url (.jpg and .png only), a top text and a bottom text, returns an impact meme. You must use `""` to provide text with multiple words. Per text there is a 120 character limit.
@@ -198,10 +198,23 @@
             <a>chp</a>
         </aliases>
         <usage>
-            `§checkpost &lt;message_id&gt; &lt;channel_id&gt;`
+            `-checkpost &lt;message_id&gt; &lt;channel_id&gt;`
         </usage>
         <description>
             Admin-only. Updates the post-data for top post with a given message_id and channel_id
+        </description>
+    </command>
+    <command>
+        <name>wiretransfer</name>
+        <aliases>
+            <a>wt</a>
+            <a>donate</a>
+        </aliases>
+        <usage>
+            `-wiretransfer &lt;user_id or mention&gt; &lt;amount&gt;`
+        </usage>
+        <description>
+            This command sends the amount of karma specified to the user specified. Use 'all' instead of a number to send all your karma.
         </description>
     </command>
 </root>

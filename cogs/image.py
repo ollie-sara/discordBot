@@ -44,7 +44,7 @@ class Image(commands.Cog):
             except Exception as e:
                 print(f'{self.ccolor.FAIL}IMAGE ERROR:{self.ccolor.ENDC} Could not download image from {args[i]}' + str(e))
                 await ctx.send(
-                    'Something wen\'t wrong with a link you sent. Try again and if it still doesn\'t work, there might be something wrong with the links.',
+                    f'Something wen\'t wrong with this link you sent: {args[i]} Try again and if it still doesn\'t work, there might be something wrong with the links.',
                     delete_after=30)
                 return
             i += 1
@@ -98,7 +98,7 @@ class Image(commands.Cog):
         if await self.bot.is_restricted(ctx):
             return
         if len(args) != 3:
-            await ctx.send('Incorrect usage of the command. Use `§meme <url> "<toptext>" "<bottomtext>"`.')
+            await ctx.send('Incorrect usage of the command. Use `-meme <url> "<toptext>" "<bottomtext>"`.')
             return
         if len(args[1]) > 120 or len(args[2]) > 120:
             await ctx.send(f'The strings you provided is too long. Limit yourself to 120 characters per line. Your top line was {len(args[1])} characters long and your bottom line {len(args[2])}')
@@ -147,7 +147,7 @@ class Image(commands.Cog):
 
         # INVALID INPUT
         if not arg:
-            await ctx.send('Incorrect use of the command. Refer to `§help drumpf` for further instructions.')
+            await ctx.send('Incorrect use of the command. Refer to `-help drumpf` for further instructions.')
             return
 
         # STARTING VALUES
