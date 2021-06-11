@@ -15,6 +15,18 @@
             <name>-wiretransfer</name>
             <description>Used to send karma to a user.</description>
         </command>
+        <command>
+            <name>-trousch</name>
+            <description>Dare a user to do something, and send them karma if they actually do!</description>
+        </command>
+        <command>
+            <name>-ehned</name>
+            <description>Put karma on a dare, that will be distributed if the dare is fulfilled.</description>
+        </command>
+        <command>
+            <name>-endtrousch</name>
+            <description>Used to conclude a dare you've opened, if the dare was fulfilled or not.</description>
+        </command>
     </category>
     <category>
         <cname>Media</cname>

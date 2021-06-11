@@ -244,15 +244,17 @@ class Kasino(commands.Cog):
     def __init_user(self, user_id):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT * FROM users WHERE user_id={user_id}')
+        cursor.execute(f'SELECT * FROM users WHERE user_id=?', [user_id])
         user = cursor.fetchone()
         if user is None:
             self.bot.get_cog('Karma').add_user(user_id)
+        cursor.close()
+        db.close()
 
     def __is_same_option(self, user_id, kasino_id, option):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT option FROM bets WHERE kasino_id={kasino_id} AND user_id={user_id};')
+        cursor.execute(f'SELECT option FROM bets WHERE kasino_id=? AND user_id=?;', [kasino_id, user_id])
         current_option = cursor.fetchone()[0]
         cursor.close()
         db.close()
@@ -261,7 +263,7 @@ class Kasino(commands.Cog):
     def __get_balance(self, user_id):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT (post_karma + link_karma) AS total FROM users WHERE user_id={user_id};')
+        cursor.execute(f'SELECT (post_karma + link_karma) AS total FROM users WHERE user_id=?;', [user_id])
         balance = cursor.fetchone()[0]
         cursor.close()
         db.close()
@@ -270,7 +272,7 @@ class Kasino(commands.Cog):
     def __has_balance(self, user_id, amount):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT (post_karma + link_karma) AS total FROM users WHERE user_id={user_id};')
+        cursor.execute(f'SELECT (post_karma + link_karma) AS total FROM users WHERE user_id=?;', [user_id])
         balance = cursor.fetchone()[0]
         cursor.close()
         db.close()
@@ -286,7 +288,8 @@ class Kasino(commands.Cog):
         # UPDATE
         cursor.execute(f'INSERT INTO bets '
                        f'(user_id, option, amount, ratio, kasino_id) '
-                       f'VALUES ({user_id}, {option}, {amount}, {ratio}, {kasino_id});')
+                       f'VALUES (?, ?, ?, ?, ?);',
+                       [user_id, option, amount, ratio, kasino_id])
         cursor.execute(f'UPDATE kasino SET '
                        f'bets = bets+1, '
                        f'bets_{option} = bets_{option}+1, '
@@ -296,7 +299,7 @@ class Kasino(commands.Cog):
         self.__remove_karma(user_id, amount, ratio, cursor)
 
         # GET INFO
-        cursor.execute(f'SELECT post_karma, link_karma, (post_karma + link_karma) FROM users WHERE user_id={user_id}')
+        cursor.execute(f'SELECT post_karma, link_karma, (post_karma + link_karma) FROM users WHERE user_id=?', [user_id])
         current_karma = cursor.fetchone()
 
         cursor.close()
@@ -328,9 +331,9 @@ class Kasino(commands.Cog):
         self.__remove_karma(user_id, amount, self.__get_ratio(user_id), cursor)
 
         # GET INFO
-        cursor.execute(f'SELECT amount FROM bets WHERE user_id={user_id} AND kasino_id={kasino_id}')
+        cursor.execute(f'SELECT amount FROM bets WHERE user_id=? AND kasino_id=?', [user_id, kasino_id])
         new_total = cursor.fetchone()[0]
-        cursor.execute(f'SELECT post_karma, link_karma, (post_karma + link_karma) FROM users WHERE user_id={user_id}')
+        cursor.execute(f'SELECT post_karma, link_karma, (post_karma + link_karma) FROM users WHERE user_id=?', [user_id])
         current_karma = cursor.fetchone()
 
         cursor.close()
@@ -349,7 +352,7 @@ class Kasino(commands.Cog):
     def __has_already_bet(self, user_id, kasino_id):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT * FROM bets WHERE kasino_id={kasino_id} AND user_id={user_id};')
+        cursor.execute(f'SELECT * FROM bets WHERE kasino_id=? AND user_id=?;', [kasino_id, user_id])
         entries = cursor.fetchall()
         cursor.close()
         db.close()
@@ -358,7 +361,7 @@ class Kasino(commands.Cog):
     def __lock_kasino(self, id):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'UPDATE kasino SET locked=TRUE WHERE id={id}')
+        cursor.execute(f'UPDATE kasino SET locked=TRUE WHERE id=?', [id])
         cursor.close()
         db.commit()
         db.close()
@@ -367,11 +370,11 @@ class Kasino(commands.Cog):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
 
-        cursor.execute(f'SELECT channel_id, message_id FROM kasino WHERE id={id};')
+        cursor.execute(f'SELECT channel_id, message_id FROM kasino WHERE id=?;', [id])
         msg_location = cursor.fetchone()
         kasino_msg = await (await self.bot.fetch_channel(msg_location[0])).fetch_message(msg_location[1])
         await kasino_msg.delete()
-        cursor.execute(f'DELETE FROM kasino WHERE id={id};')
+        cursor.execute(f'DELETE FROM kasino WHERE id=?;', [id])
 
         cursor.close()
         db.commit()
@@ -386,7 +389,7 @@ class Kasino(commands.Cog):
 
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT * FROM kasino WHERE id={id};')
+        cursor.execute(f'SELECT * FROM kasino WHERE id=?;', [id])
         kasino = cursor.fetchone()
         cursor.close()
         db.close()
@@ -404,7 +407,7 @@ class Kasino(commands.Cog):
 
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT locked FROM kasino WHERE id={id}')
+        cursor.execute(f'SELECT locked FROM kasino WHERE id=?', [id])
         is_locked = cursor.fetchone()[0]
         cursor.close()
         db.close()
@@ -449,7 +452,7 @@ class Kasino(commands.Cog):
     async def __send_conclusion(self, ctx, id, winner, author, author_img):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT question, option_1, option_2, amount_1, amount_2 FROM kasino WHERE id={id}')
+        cursor.execute(f'SELECT question, option_1, option_2, amount_1, amount_2 FROM kasino WHERE id=?', [id])
         kasino = cursor.fetchone()
         cursor.close()
         db.close()
@@ -488,16 +491,16 @@ class Kasino(commands.Cog):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
 
-        cursor.execute(f'SELECT user_id, amount, ratio FROM bets WHERE kasino_id={id}')
+        cursor.execute(f'SELECT user_id, amount, ratio FROM bets WHERE kasino_id=?', [id])
         entries = cursor.fetchall()
-        cursor.execute(f'SELECT question FROM kasino WHERE id={id}')
+        cursor.execute(f'SELECT question FROM kasino WHERE id=?', [id])
         question = cursor.fetchone()[0]
 
-        cursor.execute(f'DELETE FROM bets WHERE kasino_id={id}')
+        cursor.execute(f'DELETE FROM bets WHERE kasino_id=?', [id])
 
         for bet in entries:
             self.__add_karma(user_id=bet[0], amount=bet[1], ratio=bet[2], dbcursor=cursor)
-            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={bet[0]}').fetchone()
+            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id=?', [bet[0]]).fetchone()
             output = discord.Embed(
                 title=f'**You\'ve been refunded {bet[1]} karma.**',
                 color=discord.Colour.from_rgb(52, 79, 235),
@@ -513,17 +516,17 @@ class Kasino(commands.Cog):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
 
-        cursor.execute(f'SELECT user_id, amount, ratio FROM bets WHERE kasino_id={id} AND option=1;')
+        cursor.execute(f'SELECT user_id, amount, ratio FROM bets WHERE kasino_id=? AND option=1;', [id])
         winners = cursor.fetchall()
-        cursor.execute(f'SELECT user_id, amount FROM bets WHERE kasino_id={id} AND option=2;')
+        cursor.execute(f'SELECT user_id, amount FROM bets WHERE kasino_id=? AND option=2;', [id])
         losers = cursor.fetchall()
-        cursor.execute(f'SELECT amount_1, (amount_1 + amount_2) AS amount FROM kasino WHERE id={id};')
+        cursor.execute(f'SELECT amount_1, (amount_1 + amount_2) AS amount FROM kasino WHERE id=?;', [id])
         amounts = cursor.fetchone()
         amount_1 = amounts[0]
         total_amount = amounts[1]
-        cursor.execute(f'SELECT question FROM kasino WHERE id={id}')
+        cursor.execute(f'SELECT question FROM kasino WHERE id=?', [id])
         question = cursor.fetchone()[0]
-        cursor.execute(f'DELETE FROM bets WHERE kasino_id={id}')
+        cursor.execute(f'DELETE FROM bets WHERE kasino_id=?', [id])
 
         for bet in winners:
             win_ratio = bet[1]/amount_1
@@ -531,7 +534,7 @@ class Kasino(commands.Cog):
 
             self.__add_karma(user_id=bet[0], amount=win_amount, ratio=bet[2], dbcursor=cursor)
 
-            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={bet[0]}').fetchone()
+            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id=?', [bet[0]]).fetchone()
             output = discord.Embed(
                 title=f':tada: **You\'ve won {win_amount} karma!** :tada:',
                 color=discord.Colour.from_rgb(66, 186, 50),
@@ -541,7 +544,7 @@ class Kasino(commands.Cog):
             )
             await (await self.bot.fetch_user(bet[0])).send(embed=output)
         for bet in losers:
-            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={bet[0]}').fetchone()
+            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id=?', [bet[0]]).fetchone()
             output = discord.Embed(
                 title=f':chart_with_downwards_trend: **You\'ve unfortunately lost {bet[1]} karma...** :chart_with_downwards_trend:',
                 color=discord.Colour.from_rgb(209, 25, 25),
@@ -557,17 +560,17 @@ class Kasino(commands.Cog):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
 
-        cursor.execute(f'SELECT user_id, amount, ratio FROM bets WHERE kasino_id={id} AND option=2;')
+        cursor.execute(f'SELECT user_id, amount, ratio FROM bets WHERE kasino_id=? AND option=2;', [id])
         winners = cursor.fetchall()
-        cursor.execute(f'SELECT user_id, amount FROM bets WHERE kasino_id={id} AND option=1;')
+        cursor.execute(f'SELECT user_id, amount FROM bets WHERE kasino_id=? AND option=1;', [id])
         losers = cursor.fetchall()
-        cursor.execute(f'SELECT amount_2, (amount_1 + amount_2) AS amount FROM kasino WHERE id={id};')
+        cursor.execute(f'SELECT amount_2, (amount_1 + amount_2) AS amount FROM kasino WHERE id=?;', [id])
         amounts = cursor.fetchone()
         amount_2 = amounts[0]
         total_amount = amounts[1]
-        cursor.execute(f'SELECT question FROM kasino WHERE id={id}')
+        cursor.execute(f'SELECT question FROM kasino WHERE id=?', [id])
         question = cursor.fetchone()[0]
-        cursor.execute(f'DELETE FROM bets WHERE kasino_id={id}')
+        cursor.execute(f'DELETE FROM bets WHERE kasino_id=?', [id])
 
         for bet in winners:
             win_ratio = bet[1]/amount_2
@@ -575,7 +578,7 @@ class Kasino(commands.Cog):
 
             self.__add_karma(user_id=bet[0], amount=win_amount, ratio=bet[2], dbcursor=cursor)
 
-            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={bet[0]}').fetchone()
+            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id=?', [bet[0]]).fetchone()
             output = discord.Embed(
                 title=f':tada: **You\'ve won {win_amount} karma!** :tada:',
                 color=discord.Colour.from_rgb(66, 186, 50),
@@ -585,7 +588,7 @@ class Kasino(commands.Cog):
             )
             await (await self.bot.fetch_user(bet[0])).send(embed=output)
         for bet in losers:
-            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={bet[0]}').fetchone()
+            user = cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id=?', [bet[0]]).fetchone()
             output = discord.Embed(
                 title=f':chart_with_downwards_trend: **You\'ve unfortunately lost {bet[1]} karma...** :chart_with_downwards_trend:',
                 color=discord.Colour.from_rgb(209, 25, 25),
@@ -612,7 +615,7 @@ class Kasino(commands.Cog):
     def __get_ratio(self, user_id):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
-        cursor.execute(f'SELECT post_karma, link_karma FROM users WHERE user_id={user_id}')
+        cursor.execute('SELECT post_karma, link_karma FROM users WHERE user_id=?', [user_id])
         karma = cursor.fetchone()
         cursor.close()
         db.close()
@@ -653,9 +656,10 @@ class Kasino(commands.Cog):
 
         cursor.execute(f'INSERT INTO kasino '
                        f'(question, option_1, option_2, guild_id, channel_id, message_id) '
-                       f'VALUES ("{question}", "{option_1}", "{option_2}", {ctx.guild.id}, {ctx.channel.id}, {kasino_msg.id});')
+                       f'VALUES (?, ?, ?, ?, ?, ?);',
+                       (question, option_1, option_2, kasino_msg.guild.id, kasino_msg.channel.id, kasino_msg.id))
         cursor.execute('SELECT last_insert_rowid();')
-        kasino_id = cursor.fetchone()[0]
+        kasino_id = int(cursor.fetchone()[0])
         cursor.close()
         db.commit()
         db.close()
@@ -667,7 +671,7 @@ class Kasino(commands.Cog):
         cursor = db.cursor()
 
         # DELETE OLD
-        cursor.execute(f'SELECT channel_id, message_id FROM kasino WHERE id={id}')
+        cursor.execute(f'SELECT channel_id, message_id FROM kasino WHERE id=?', [id])
         msg_location = cursor.fetchone()
         kasino_msg = await (await self.bot.fetch_channel(msg_location[0])).fetch_message(msg_location[1])
         await kasino_msg.delete()
@@ -688,7 +692,7 @@ class Kasino(commands.Cog):
         db = sqlite3.connect(os.path.abspath('./data/karma.db'))
         cursor = db.cursor()
 
-        cursor.execute(f'SELECT * FROM kasino WHERE id={kasino_id};')
+        cursor.execute(f'SELECT * FROM kasino WHERE id=?;', [kasino_id])
         kasino = cursor.fetchone()
         cursor.close()
         db.close()

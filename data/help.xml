@@ -217,4 +217,45 @@
             This command sends the amount of karma specified to the user specified. Use 'all' instead of a number to send all your karma.
         </description>
     </command>
+    <command>
+        <name>trousch</name>
+        <aliases>
+            <a>tr</a>
+            <a>dare</a>
+        </aliases>
+        <usage>
+           `-trousch &lt;user_id or mention&gt; "&lt;prompt&gt;"`
+        </usage>
+        <description>
+            Using this command, you dare the mentioned user to do whatever you've specified in the prompt. Using `-ehned` or `-noballs`, you can provide a karma incentive to the user.
+        </description>
+    </command>
+    <command>
+        <name>ehned</name>
+        <aliases>
+            <a>en</a>
+            <a>noballs</a>
+            <a>nb</a>
+        </aliases>
+        <usage>
+            `-ehned &lt;trousch ID&gt; &lt;amount&gt;`
+        </usage>
+        <description>
+            This command puts the specified amount of karma from your account on the dare. If the dare is fulfilled, the karma goes to the dared person, otherwise it is refunded to you. You may use `all` instead of a positive whole number to provide all of your karma. You may also increase your donation by resubmitting.
+        </description>
+    </command>
+    <command>
+        <name>endtrousch</name>
+        <aliases>
+            <a>endtr</a>
+            <a>enddare</a>
+            <a>endd</a>
+        </aliases>
+        <usage>
+            `-endtrousch &lt;trousch ID&gt; &lt;Y or N&gt;`
+        </usage>
+        <description>
+            If you've opened the dare with the specified ID, this command concludes the dare. If you pass 'Y', the dared person receives all the karma in the pool. If you pass 'N', all karma gets refunded. Use this command with good faith, otherwise the bot-owner and karma-god may punish you heavily and at his discretion.
+        </description>
+    </command>
 </root>

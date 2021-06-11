@@ -7,7 +7,7 @@ import os
 class SmallUtils(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.VERSION = '**v1.3**'
+        self.VERSION = '**v1.4**'
 
     @commands.command(name='source', aliases=['s', 'info'])
     async def source(self, ctx):
